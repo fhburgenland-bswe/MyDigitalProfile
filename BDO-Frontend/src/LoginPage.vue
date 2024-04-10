@@ -13,7 +13,7 @@
       <div class="input-box"><input type="email" name="" id="" placeholder="max.muster@bdo.de" required></div>
       <label for="password">Passwort</label>
       <div class="input-box"><input type="password" name="" id="" placeholder="Enter your password" required></div>
-      <input type="button" value="Login">
+      <button type="submit" value="Login">Login</button>
     </form>
 
   </div>
