@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '@/assets/LoginPage.css';
 
 </script>
 
