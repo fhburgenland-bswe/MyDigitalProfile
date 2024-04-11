@@ -9,7 +9,7 @@ body {
 }
 
 .LoginContainer{
-  font-family: Poppins;
+  font-family: Poppins, serif;
   max-width: fit-content;
   margin: auto auto;
 
@@ -96,5 +96,31 @@ input[type=password]:active {
   border: 2px solid #d1e9ff;
   box-shadow: 0 0 10px #d1e9ff;
   outline: none;
+}
+
+
+
+/* Mobile Version begins here */
+
+@media screen and (max-width: 500px) {
+  #bdo-logo img {
+    width: 250px;
+    padding-bottom: 15vh;
+  }
+
+  .logintext {
+    font-size: 18px;
+  }
+
+  label {
+    font-size: 14px;
+  }
+
+  input[type=email],
+  input[type=password],
+  button {
+    max-width: 80vw;
+    min-width: 100px;
+  }
 }
 
