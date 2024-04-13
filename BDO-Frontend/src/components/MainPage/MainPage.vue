@@ -7,6 +7,14 @@ import '@/assets/MainPage.css';
 
   <header>
       <nav>
+        <div class="mobile-navbar">
+          <div class="hamburger-menu">☰</div>
+          <div class="navbar-title">Max Muster</div>
+          <div class="navbar-avatar">
+            <img id="personapicture" src="/src/assets/personaavatar.svg" alt="Avatar Picture" srcset="">
+          </div>
+        </div>
+
         <ul>
           <div class="btn">
             <i class="fas fa-times close-btn"></i>
@@ -94,6 +102,7 @@ import '@/assets/MainPage.css';
 </template>
 
 <style scoped>
+
 * {
   font-family: Poppins, serif;
   padding: 0;
@@ -105,8 +114,8 @@ main{
   margin: 100px auto;
   max-width: 600px;
   display: grid;
-  grid-template-columns: min-content min-content min-content; /* Three columns with different widths */
-  grid-template-rows: repeat(11, auto); /* 11 rows to accommodate all items */
+  grid-template-columns: min-content min-content min-content;
+  grid-template-rows: repeat(11, auto);
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
@@ -131,6 +140,8 @@ main{
 
 body {
   min-height: 100vh;
+  margin: 0;
+  padding: 0;
   font-family: "poppins", sans-serif;
   position: relative;
 }
@@ -138,6 +149,7 @@ body {
 
 header {
   padding: 0.5rem 0;
+  margin: 0;
 }
 
 
@@ -145,6 +157,8 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 nav .logo {
@@ -173,7 +187,7 @@ nav ul li {
   display: flex;
   margin: 0rem 0.2rem;
   align-items: center;
-  padding: 0rem 0rem;
+  padding: 0;
 }
 
 nav {
@@ -188,4 +202,47 @@ nav {
 #personapicture{
   width: 100px;
 }
+
+
+.mobile-navbar {
+  display: none;
+  background-color: #6200ee;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.mobile-navbar .hamburger-menu,
+.mobile-navbar .navbar-title,
+.mobile-navbar .navbar-avatar {
+  display: flex;
+  align-items: center;
+}
+
+
+@media (max-width: 900px) {
+
+  main{
+    font-size: 1.2em;
+  }
+
+  .logo img{
+    display: none;
+  }
+
+
+  nav ul {
+    display: none;
+  }
+
+  .mobile-navbar {
+    display: flex;
+  }
+}
+
+
+
 </style>
