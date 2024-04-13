@@ -4,159 +4,100 @@ import '@/assets/MainPage.css';
 </script>
 
 <template>
-  <div class="main-page-wrapper">
-    <div class="header-wrapper">
-      <div class="Headercontainer">
-        <div class="persona">
-          <div class="profilepic"><img id="personapic" src="/src/assets/personaavatar.svg"></div>
-          <div class="username">Max Muster</div>
+
+  <header>
+    <div class="container">
+      <nav>
+        <ul>
+          <div class="btn">
+            <i class="fas fa-times close-btn"></i>
+          </div>
+          <li ><img id="personapicture" src="/src/assets/personaavatar.svg" alt="Avatar Picture" srcset=""> </li>
+          <li>Max Muster</li>
+        </ul>
+
+        <div class="logo">
+          <img src="/src/assets/bdologo.png" alt="" />
         </div>
-        <div class="logo-wrapper">
-          <div id="bdo-logo"><img src="/src/assets/bdologo.png"></div>
-        </div>
-      </div>
+      </nav>
     </div>
 
-    <div class="grid-wrapper">
+    <main>
 
-      <div class="grid-container">
-        <div class="grid-item">Personalnummer</div>
-        <div class="grid-item">1234567890</div>
-        <div class="grid-item"> </div>
-      </div>
+    </main>
+  </header>
 
-      <div class="grid-container">
-        <div class="grid-item">Vorname</div>
-        <div class="grid-item">Max</div>
-        <div class="grid-item"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Nachname</div>
-        <div class="grid-item">Muster</div>
-        <div class="grid-item"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Geburtsdatum</div>
-        <div class="grid-item">01.01.2000</div>
-        <div class="grid-item"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Standort</div>
-        <div class="grid-item">Düsseldorf</div>
-        <div class="grid-item"> <img id="pencil" src="/src/assets/pencil.svg"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">PLZ</div>
-        <div class="grid-item">1010</div>
-        <div class="grid-item"> <img id="pencil" src="/src/assets/pencil.svg"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Ort</div>
-        <div class="grid-item">Wien</div>
-        <div class="grid-item"> <img id="pencil" src="/src/assets/pencil.svg"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Straße</div>
-        <div class="grid-item">Hauptstraße</div>
-        <div class="grid-item"> <img id="pencil" src="/src/assets/pencil.svg"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Hausnummer</div>
-        <div class="grid-item">12/3/2</div>
-        <div class="grid-item"> <img id="pencil" src="/src/assets/pencil.svg"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Skills</div>
-        <div class="grid-item">Java, ...</div>
-        <div class="grid-item"> </div>
-      </div>
-
-      <div class="grid-container">
-        <div class="grid-item">Karrierelevel</div>
-        <div class="grid-item">Junior</div>
-        <div class="grid-item"> </div>
-      </div>
-    </div>
-  </div>
 
 </template>
 
 <style scoped>
-  .main-page-wrapper{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
-    font-family: Poppins, serif;
-    }
 
-  #bdo-logo img{
-    width: 347px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+* {
+  font-family: Poppins, serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
 
-  .header-wrapper{
-    display: flex;
-    width: 100%;
-  }
-  .Headercontainer {
-    display: flex;
-    width: 1080px;
-    align-items: center;
-    justify-content: flex-start;
+body {
+  min-height: 100vh;
+  font-family: "poppins", sans-serif;
+  position: relative;
+}
 
-  }
 
-  .persona{
-    flex-grow: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+header {
+  padding: 0.5rem 0;
+}
 
-  .logo-wrapper{
+
+nav {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  }
 
-  .username{
-    font-size:30px;
-  }
+}
 
-  #personapic{
-    width: 70px;
-    height: 70px;
-  }
+nav .logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 
-  .grid-wrapper{
-    margin-top: 50px;
-    font-size: 40px;
-  }
+.logo img {
+  width: 347px;
+  height: 130px;
+}
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* adjust as needed */
-    height: 50px;
-  }
+.logo span {
+  font-size: 2rem;
+}
 
-  .grid-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-  }
+nav ul {
+  display: flex;
+  align-items: center;
+  list-style-type: none;
+}
 
-  .grid-container > .grid-item:nth-child(2) {
-    justify-content: flex-end;
-  }
+nav ul li {
+  display: flex;
+  margin: 0rem 0.2rem;
+  align-items: center;
+  padding: 0rem 0rem;
+}
 
+nav {
+  width: 100%;
+  text-decoration: none;
+  font-size: 2.1rem;
+  letter-spacing: 2.5px;
+  color: black;
+
+}
+
+#personapicture{
+  width: 100px;
+}
 </style>
