@@ -1,6 +1,13 @@
 <script setup lang="ts">
 import '@/assets/MainPage.css';
 
+import { ref } from 'vue';
+
+const isMenuOpen = ref(false);
+
+function toggleMenu() {
+  isMenuOpen.value = !isMenuOpen.value;
+}
 </script>
 
 <template>
@@ -8,19 +15,23 @@ import '@/assets/MainPage.css';
   <header>
       <nav>
         <div class="mobile-navbar">
-          <div class="hamburger-menu">☰</div>
+          <button :class="{ collapsed: !isMenuOpen }" @click="toggleMenu" class="hamburger-menu" aria-label="Toggle navigation">
+            <span class="toggler-icon top-bar"></span>
+            <span class="toggler-icon middle-bar"></span>
+            <span class="toggler-icon bottom-bar"></span>
+          </button>
           <div class="navbar-title">Max Muster</div>
           <div class="navbar-avatar">
             <img id="personapicture" src="/src/assets/personaavatar.svg" alt="Avatar Picture" srcset="">
           </div>
         </div>
 
-        <ul>
+        <ul v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
           <div class="btn">
             <i class="fas fa-times close-btn"></i>
           </div>
-          <li ><img id="personapicture" src="/src/assets/personaavatar.svg" alt="Avatar Picture" srcset=""> </li>
-          <li>Max Muster</li>
+          <li>Entry 1</li>
+          <li>Entry 2</li>
         </ul>
 
         <div class="logo">
@@ -185,7 +196,7 @@ nav ul {
 
 nav ul li {
   display: flex;
-  margin: 0rem 0.2rem;
+  margin: 0 0.2rem;
   align-items: center;
   padding: 0;
 }
@@ -222,6 +233,9 @@ nav {
   align-items: center;
 }
 
+nav ul {
+  display: none; /* By default, the menu is hidden */
+}
 
 @media (max-width: 900px) {
 
@@ -235,14 +249,75 @@ nav {
 
 
   nav ul {
-    display: none;
+    display: block; /* Make sure to set it to block or flex as per your design when visible */
+    position: absolute; /* Optional: depending on your layout, you might want absolute positioning */
+    top: 60px; /* Adjust based on your nav bar height */
+    left: 0;
+    right: 0;
+    background-color: #f8f9fa; /* Light background for the dropdown */
+    padding: 20px; /* Padding for aesthetics */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Optional: for better visibility */
+    z-index: 1000; /* Make sure it's above other content */
   }
 
   .mobile-navbar {
-    display: flex;
+    display: flex; /* Ensures the mobile navbar is visible */
+  }
+
+  .navbar-toggler.collapsed .top-bar,
+  .navbar-toggler.collapsed .bottom-bar {
+    transform: rotate(0deg); /* Reset rotation when collapsed */
+  }
+
+  .navbar-toggler.collapsed .middle-bar {
+    opacity: 1; /* Make middle bar visible when collapsed */
+  }
+
+  .navbar-title {
+    font-size: 1.5rem;
+  }
+
+  #personapicture{
+    width: 50px;
   }
 }
 
+.mobile-navbar .hamburger-menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 30px; /* Width of the button */
+  height: 25px; /* Height of the button */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: none;
+  outline: none;
+}
+
+.toggler-icon {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: #fff; /* Change this as needed */
+  transition: all 0.3s ease-in-out;
+}
+
+/* Animation for the toggle */
+.hamburger-menu:not(.collapsed) .top-bar {
+  transform: rotate(45deg);
+  transform-origin: 10% 10%;
+}
+
+.hamburger-menu:not(.collapsed) .middle-bar {
+  opacity: 0;
+}
+
+.hamburger-menu:not(.collapsed) .bottom-bar {
+  transform: rotate(-45deg);
+  transform-origin: 10% 90%;
+}
 
 
 </style>
