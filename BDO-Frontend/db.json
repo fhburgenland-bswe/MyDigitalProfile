@@ -1,0 +1,38 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "martin.muster@bdo.de",
+      "password": "123456",
+      "personalnummer": "4564657489",
+      "vorname": "Martin",
+      "nachname": "Muster",
+      "geburtsdatum": "01.01.1999",
+      "standort": "Düsseldorf",
+      "plz": "1030",
+      "ort": "Wien",
+      "strasse": "Wienerstraße",
+      "hausnummer": "12/3/2",
+      "skills": "VueJS, Java",
+      "karrierelevel": "Senior"
+    },
+
+    {
+      "id": "2",
+      "email": "julia.beispiel@bdo.de",
+      "password": "abcdef",
+      "personalnummer": "1234567890",
+      "vorname": "Julia",
+      "nachname": "Beispiel",
+      "geburtsdatum": "02.02.2000",
+      "standort": "Berlin",
+      "plz": "1040",
+      "ort": "Berlin",
+      "strasse": "Berlinerstraße",
+      "hausnummer": "34/5/6",
+      "skills": "JavaScript",
+      "karrierelevel": "Junior"
+    }
+
+  ]
+}
