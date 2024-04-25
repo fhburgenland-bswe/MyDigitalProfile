@@ -1,20 +1,61 @@
 <script setup lang="ts">
+import { login } from '@/services/login.service';
+import { useRouter } from 'vue-router';
+import { toast } from "vue3-toastify";
+
+
+interface LoginResponse {
+  success: boolean;
+  message: string;
+  userId?: number;
+}
+
+const router = useRouter();
+
+const handleSubmit = async (event: Event) => {
+  event.preventDefault();
+  const form = event.target as HTMLFormElement;
+  const formData = new FormData(form);
+  const email = formData.get('email') as string;
+  const password = formData.get('password') as string;
+
+  const response: LoginResponse = await login(email, password);
+  console.log("Login successfull");
+  if (response.success && response.userId) {
+    localStorage.setItem('userId', response.userId.toString());  // Save the user ID in the local storage after a successful login
+    router.push('/Main');
+  } else {
+    toast("E-Mail oder Passwort falsch", {
+      "theme": "colored",
+      "type": "error",
+      "position": "bottom-center",
+      "dangerouslyHTMLString": true,
+    })
+  }
+};
+
+
 
 </script>
 
 <template>
+
+
   <div class="login-page-wrapper">
     <div class="LoginContainer">
+
+
       <div id="bdo-logo"><img src="/src/assets/bdologo.png"></div>
       <div class="logintext">In Account einloggen</div>
 
-      <form action="" method="post">
+      <form @submit="handleSubmit">
         <label for="email">E-Mail</label>
-        <div class="input-box"><input type="email" name="" id="" placeholder="max.muster@bdo.de" required></div>
+        <div class="input-box"><input type="email" name="email" placeholder="max.muster@bdo.de" required></div>
         <label for="password">Passwort</label>
-        <div class="input-box"><input type="password" name="" id="" placeholder="Enter your password" required></div>
+        <div class="input-box"><input type="password" name="password" placeholder="Enter your password" required></div>
         <button type="submit" value="Login">Login</button>
       </form>
+
 
     </div>
   </div>
