@@ -1,10 +1,12 @@
 # BDO-Frontend
 
-This template should help get you started developing with Vue 3 in Vite.
+This Project is a frontend for the BDO-Project. It is built with [Vite](https://vitejs.dev/), [Vue 3](https://v3.vuejs.org/), [TypeScript](https://www.typescriptlang.org/),  [Toastify](https://vue3-toastify.js-bridge.com/) and [JSON Server](https://www.npmjs.com/package/json-server)  
+
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).<br>
+Alternatively, you can use IntelliJ Ultimate with the Vue.js plugin.
 
 ## Type Support for `.vue` Imports in TS
 
@@ -24,6 +26,12 @@ npm install
 
 ```sh
 npm run dev
+```
+
+### Run JSON Server
+
+```sh
+json-server --watch db.json --port 3001
 ```
 
 ### Type-Check, Compile and Minify for Production
