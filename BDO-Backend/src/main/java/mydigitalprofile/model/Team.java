@@ -1,89 +1,113 @@
 package mydigitalprofile.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 
 /**
- * Represents a Team entity in the application.
- * Each team has a unique ID, a project ID, a team leader, and a project.
+ * Represents a Team entity in the application. Each team has a unique ID, a
+ * project ID, a team leader, and a project.
  *
  * @author Khaled Alnahhas
  */
 @Entity
 public class Team {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long teamID;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long teamID;
 
-    @Column
-    private Long projektID;
+	@Column
+	private String teamName;
 
-    @ManyToOne
-    @JoinColumn(name = "teamleiter_id")
-    private TeamLeiter teamleiter;
+	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@JoinColumn(name = "projekt_id")
+	private Projekt projekt;
 
-    @ManyToOne
-    @JoinColumn(name = "projekt_id")
-    private Projekt projekt;
+	@OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+	private Set<Mitarbeiter> mitarbeiters = new HashSet<>();
 
-    // Getters and setters
+	/**
+	 * 
+	 */
+	public Team() {
+		super();
+	}
 
-    public Long getTeamID() {
-        return teamID;
-    }
+	/**
+	 * @param teamName
+	 * @param projekt
+	 * @param mitarbeiters
+	 */
+	public Team(String teamName, Projekt projekt, Set<Mitarbeiter> mitarbeiters) {
+		super();
+		this.teamName = teamName;
+		this.projekt = projekt;
+		this.mitarbeiters = mitarbeiters;
+	}
 
-    public void setTeamID(Long teamID) {
-        this.teamID = teamID;
-    }
+	
+	public void addMitarbeiter(Mitarbeiter mitarbeiter) {
+		mitarbeiters.add(mitarbeiter);
+		mitarbeiter.setTeam(this);
+	}
+	
+	
+	/**
+	 * @return the teamID
+	 */
+	public Long getTeamID() {
+		return teamID;
+	}
 
-    public Long getProjektID() {
-        return projektID;
-    }
+	/**
+	 * @param teamID the teamID to set
+	 */
+	public void setTeamID(Long teamID) {
+		this.teamID = teamID;
+	}
 
-    public void setProjektID(Long projektID) {
-        this.projektID = projektID;
-    }
+	/**
+	 * @return the teamName
+	 */
+	public String getTeamName() {
+		return teamName;
+	}
 
-    public TeamLeiter getTeamleiter() {
-        return teamleiter;
-    }
+	/**
+	 * @param teamName the teamName to set
+	 */
+	public void setTeamName(String teamName) {
+		this.teamName = teamName;
+	}
 
-    public void setTeamleiter(TeamLeiter teamleiter) {
-        this.teamleiter = teamleiter;
-    }
+	/**
+	 * @return the projekt
+	 */
+	public Projekt getProjekt() {
+		return projekt;
+	}
 
-    public Projekt getProjekt() {
-        return projekt;
-    }
+	/**
+	 * @param projekt the projekt to set
+	 */
+	public void setProjekt(Projekt projekt) {
+		this.projekt = projekt;
+	}
 
-    public void setProjekt(Projekt projekt) {
-        this.projekt = projekt;
-    }
+	/**
+	 * @return the mitarbeiters
+	 */
+	public Set<Mitarbeiter> getMitarbeiters() {
+		return mitarbeiters;
+	}
 
-    // equals(), hashCode(), toString()
+	/**
+	 * @param mitarbeiters the mitarbeiters to set
+	 */
+	public void setMitarbeiters(Set<Mitarbeiter> mitarbeiters) {
+		this.mitarbeiters = mitarbeiters;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Team team = (Team) o;
-
-        return teamID != null ? teamID.equals(team.teamID) : team.teamID == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return teamID != null ? teamID.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Team{" +
-                "teamID=" + teamID +
-                ", projektID=" + projektID +
-                ", teamleiter=" + teamleiter +
-                ", projekt=" + projekt +
-                '}';
-    }
 }

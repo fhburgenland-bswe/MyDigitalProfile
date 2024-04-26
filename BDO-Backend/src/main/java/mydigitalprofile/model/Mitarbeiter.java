@@ -2,6 +2,8 @@ package mydigitalprofile.model;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Represents a Mitarbeiter entity in the application.
@@ -11,212 +13,296 @@ import java.util.Date;
 @Entity
 public class Mitarbeiter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long MAID;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long maId;
 
-    @Column
-    private String PNR;
+	@Column
+	private String pnr;
 
-    @Column
-    private String Vorname;
+	@Column
+	private String vorname;
 
-    @Column
-    private String Nachname;
+	@Column
+	private String nachname;
 
-    @Column
-    private Date Geburtsdatum;
+	@Column(unique = true, nullable = false)
+	private String username;
 
-    @Column
-    private String Standort;
+	@Column(nullable = false)
+	private String passwort;
 
-    @Column
-    private String Ort;
+	@Column
+	private Date geburtsdatum;
 
-    @Column
-    private String Straße;
+	@Column
+	private String standort;
 
-    @Column
-    private String HausNr;
+	@Column
+	private String karriereLevel;
 
-    @Column
-    private String Skills;
+	@Enumerated(EnumType.STRING)
+	private Rolle rolle = Rolle.Mitarbeiter;
 
-    @Column
-    private String Karrierelevel;
+	@OneToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "address_id")
+	private Address address;
 
-    @Column
-    private String PLZ;
+	@ManyToOne
+	@JoinColumn(name = "team_id")
+	private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "benutzer_id")
-    private Benutzer benutzer;
+	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER)
+	private Set<Skill> skills = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "kalender_id")
-    private Kalender kalender;
+	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER)
+	private Set<KalenderEvent> kalenderEvents = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "teamleiter_id")
-    private TeamLeiter teamleiter;
+	/**
+	 * 
+	 */
+	public Mitarbeiter() {
+		super();
+	}
 
-    // Getters and setters
+	/**
+	 * @param pnr
+	 * @param vorname
+	 * @param nachname
+	 * @param username
+	 * @param passwort
+	 * @param geburtsdatum
+	 * @param standort
+	 * @param karriereLevel
+	 * @param rolle
+	 * @param address
+	 * @param team
+	 * @param skills
+	 * @param kalenderEvents
+	 */
+	public Mitarbeiter(String pnr, String vorname, String nachname, String username, String passwort, Date geburtsdatum,
+			String standort, String karriereLevel, Rolle rolle, Address address, Team team, Set<Skill> skills,
+			Set<KalenderEvent> kalenderEvents) {
+		super();
+		this.pnr = pnr;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.username = username;
+		this.passwort = passwort;
+		this.geburtsdatum = geburtsdatum;
+		this.standort = standort;
+		this.karriereLevel = karriereLevel;
+		this.rolle = rolle;
+		this.address = address;
+		this.team = team;
+		this.skills = skills;
+		this.kalenderEvents = kalenderEvents;
+	}
 
-    public Long getMAID() {
-        return MAID;
-    }
+	public void addSkill(Skill skill) {
+		skills.add(skill);
+		skill.setMitarbeiter(this);
+	}
 
-    public void setMAID(Long MAID) {
-        this.MAID = MAID;
-    }
+	public void addKalenderEvent(KalenderEvent event) {
+		kalenderEvents.add(event);
+		event.setMitarbeiter(this);
+	}
 
-    public String getPNR() {
-        return PNR;
-    }
+	/**
+	 * @return the maId
+	 */
+	public Long getMaId() {
+		return maId;
+	}
 
-    public void setPNR(String PNR) {
-        this.PNR = PNR;
-    }
+	/**
+	 * @param maId the maId to set
+	 */
+	public void setMaId(Long maId) {
+		this.maId = maId;
+	}
 
-    public String getVorname() {
-        return Vorname;
-    }
+	/**
+	 * @return the pnr
+	 */
+	public String getPnr() {
+		return pnr;
+	}
 
-    public void setVorname(String vorname) {
-        Vorname = vorname;
-    }
+	/**
+	 * @param pnr the pnr to set
+	 */
+	public void setPnr(String pnr) {
+		this.pnr = pnr;
+	}
 
-    public String getNachname() {
-        return Nachname;
-    }
+	/**
+	 * @return the vorname
+	 */
+	public String getVorname() {
+		return vorname;
+	}
 
-    public void setNachname(String nachname) {
-        Nachname = nachname;
-    }
+	/**
+	 * @param vorname the vorname to set
+	 */
+	public void setVorname(String vorname) {
+		this.vorname = vorname;
+	}
 
-    public Date getGeburtsdatum() {
-        return Geburtsdatum;
-    }
+	/**
+	 * @return the nachname
+	 */
+	public String getNachname() {
+		return nachname;
+	}
 
-    public void setGeburtsdatum(Date geburtsdatum) {
-        Geburtsdatum = geburtsdatum;
-    }
+	/**
+	 * @param nachname the nachname to set
+	 */
+	public void setNachname(String nachname) {
+		this.nachname = nachname;
+	}
 
-    public String getStandort() {
-        return Standort;
-    }
+	/**
+	 * @return the geburtsdatum
+	 */
+	public Date getGeburtsdatum() {
+		return geburtsdatum;
+	}
 
-    public void setStandort(String standort) {
-        Standort = standort;
-    }
+	/**
+	 * @param geburtsdatum the geburtsdatum to set
+	 */
+	public void setGeburtsdatum(Date geburtsdatum) {
+		this.geburtsdatum = geburtsdatum;
+	}
 
-    public String getOrt() {
-        return Ort;
-    }
+	/**
+	 * @return the standort
+	 */
+	public String getStandort() {
+		return standort;
+	}
 
-    public void setOrt(String ort) {
-        Ort = ort;
-    }
+	/**
+	 * @param standort the standort to set
+	 */
+	public void setStandort(String standort) {
+		this.standort = standort;
+	}
 
-    public String getStraße() {
-        return Straße;
-    }
+	/**
+	 * @return the karriereLevel
+	 */
+	public String getKarriereLevel() {
+		return karriereLevel;
+	}
 
-    public void setStraße(String straße) {
-        Straße = straße;
-    }
+	/**
+	 * @param karriereLevel the karriereLevel to set
+	 */
+	public void setKarriereLevel(String karriereLevel) {
+		this.karriereLevel = karriereLevel;
+	}
 
-    public String getHausNr() {
-        return HausNr;
-    }
+	/**
+	 * @return the rolle
+	 */
+	public Rolle getRolle() {
+		return rolle;
+	}
 
-    public void setHausNr(String hausNr) {
-        HausNr = hausNr;
-    }
+	/**
+	 * @param rolle the rolle to set
+	 */
+	public void setRolle(Rolle rolle) {
+		this.rolle = rolle;
+	}
 
-    public String getSkills() {
-        return Skills;
-    }
+	/**
+	 * @return the address
+	 */
+	public Address getAddress() {
+		return address;
+	}
 
-    public void setSkills(String skills) {
-        Skills = skills;
-    }
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
-    public String getKarrierelevel() {
-        return Karrierelevel;
-    }
+	/**
+	 * @return the team
+	 */
+	public Team getTeam() {
+		return team;
+	}
 
-    public void setKarrierelevel(String karrierelevel) {
-        Karrierelevel = karrierelevel;
-    }
+	/**
+	 * @param team the team to set
+	 */
+	public void setTeam(Team team) {
+		this.team = team;
+	}
 
-    public String getPLZ() {
-        return PLZ;
-    }
+	/**
+	 * @return the skills
+	 */
+	public Set<Skill> getSkills() {
+		return skills;
+	}
 
-    public void setPLZ(String PLZ) {
-        this.PLZ = PLZ;
-    }
+	/**
+	 * @param skills the skills to set
+	 */
+	public void setSkills(Set<Skill> skills) {
+		this.skills = skills;
+	}
 
-    public Benutzer getBenutzer() {
-        return benutzer;
-    }
+	/**
+	 * @return the kalenderEvents
+	 */
+	public Set<KalenderEvent> getKalenderEvents() {
+		return kalenderEvents;
+	}
 
-    public void setBenutzer(Benutzer benutzer) {
-        this.benutzer = benutzer;
-    }
+	/**
+	 * @param kalenderEvents the kalenderEvents to set
+	 */
+	public void setKalenderEvents(Set<KalenderEvent> kalenderEvents) {
+		this.kalenderEvents = kalenderEvents;
+	}
 
-    public Kalender getKalender() {
-        return kalender;
-    }
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
 
-    public void setKalender(Kalender kalender) {
-        this.kalender = kalender;
-    }
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-    public TeamLeiter getTeamleiter() {
-        return teamleiter;
-    }
+	/**
+	 * @return the passwort
+	 */
+	public String getPasswort() {
+		return passwort;
+	}
 
-    public void setTeamleiter(TeamLeiter teamleiter) {
-        this.teamleiter = teamleiter;
-    }
+	/**
+	 * @param passwort the passwort to set
+	 */
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
+	}
 
-    // equals(), hashCode(), toString()
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Mitarbeiter that = (Mitarbeiter) o;
-
-        return MAID != null ? MAID.equals(that.MAID) : that.MAID == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return MAID != null ? MAID.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "Mitarbeiter{" +
-                "MAID=" + MAID +
-                ", PNR='" + PNR + '\'' +
-                ", Vorname='" + Vorname + '\'' +
-                ", Nachname='" + Nachname + '\'' +
-                ", Geburtsdatum=" + Geburtsdatum +
-                ", Standort='" + Standort + '\'' +
-                ", Ort='" + Ort + '\'' +
-                ", Straße='" + Straße + '\'' +
-                ", HausNr='" + HausNr + '\'' +
-                ", Skills='" + Skills + '\'' +
-                ", Karrierelevel='" + Karrierelevel + '\'' +
-                ", PLZ='" + PLZ + '\'' +
-                ", benutzer=" + benutzer +
-                ", kalender=" + kalender +
-                ", teamleiter=" + teamleiter +
-                '}';
-    }
 }
