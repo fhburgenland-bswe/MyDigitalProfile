@@ -5,6 +5,7 @@
   "scripts": {
     "build": "run-p type-check \"build-only {@}\" --",
     "test:unit": "vue-cli-service test:unit",
+    "test": "vitest",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "build-only": "vite build",
     "dev": "vite",
