@@ -1,42 +1,21 @@
-package mydigitalprofile.model;
+package mydigitalprofile.model.dto;
 
-import javax.persistence.*;
 import java.util.Date;
 
-/**
- * Represents a Projekt entity in the application.
- *
- * @author KhaledAlnahhas1
- */
-@Entity
-public class Projekt {
+import javax.persistence.Column;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long projektID;
+public class ProjektDto {
 
-	@Column
 	private String projektName;
-
-	@Column
 	private String volumina;
-
-	@Column
-	private Date startDate;
-
-	@Column
-	private Date endDate;
-
-	@Column
+	private String startDate;
+	private String endDate;
 	private String beschreibung;
-
-	@OneToOne(mappedBy = "projekt")
-	private Team team;
 
 	/**
 	 * 
 	 */
-	public Projekt() {
+	public ProjektDto() {
 		super();
 	}
 
@@ -47,28 +26,13 @@ public class Projekt {
 	 * @param endDate
 	 * @param beschreibung
 	 */
-	public Projekt(String projektName, String volumina, Date startDate, Date endDate,
-			String beschreibung) {
+	public ProjektDto(String projektName, String volumina, String startDate, String endDate, String beschreibung) {
 		super();
 		this.projektName = projektName;
 		this.volumina = volumina;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.beschreibung = beschreibung;
-	}
-
-	/**
-	 * @return the projektID
-	 */
-	public Long getProjektID() {
-		return projektID;
-	}
-
-	/**
-	 * @param projektID the projektID to set
-	 */
-	public void setProjektID(Long projektID) {
-		this.projektID = projektID;
 	}
 
 	/**
@@ -102,28 +66,28 @@ public class Projekt {
 	/**
 	 * @return the startDate
 	 */
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
 	/**
 	 * @param startDate the startDate to set
 	 */
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
 	/**
 	 * @return the endDate
 	 */
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 
 	/**
 	 * @param endDate the endDate to set
 	 */
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
@@ -139,20 +103,6 @@ public class Projekt {
 	 */
 	public void setBeschreibung(String beschreibung) {
 		this.beschreibung = beschreibung;
-	}
-
-	/**
-	 * @return the team
-	 */
-	public Team getTeam() {
-		return team;
-	}
-
-	/**
-	 * @param team the team to set
-	 */
-	public void setTeam(Team team) {
-		this.team = team;
 	}
 
 }
