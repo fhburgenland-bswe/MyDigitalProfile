@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import '@/assets/MainPage.css';
 
 import { ref, onMounted } from 'vue';
 import { getUserData } from '@/services/user.service';
