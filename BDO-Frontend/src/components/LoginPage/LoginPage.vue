@@ -20,11 +20,13 @@ const handleSubmit = async (event: Event) => {
   const password = formData.get('password') as string;
 
   const response: LoginResponse = await login(email, password);
-  console.log("Login successfull");
+
   if (response.success && response.userId) {
+    console.log("Login successfull");
     localStorage.setItem('userId', response.userId.toString());  // Save the user ID in the local storage after a successful login
     router.push('/Main');
   } else {
+    console.log("Login failed");
     toast("E-Mail oder Passwort falsch", {
       "theme": "colored",
       "type": "error",
