@@ -1,13 +1,31 @@
 <script setup lang="ts">
 import '@/assets/MainPage.css';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { getUserData } from '@/services/user.service';
 
 const isMenuOpen = ref(false);
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
+
+
+
+const userData = ref<any>(null);
+
+onMounted(async () => {
+  try {
+    const data = await getUserData();
+    console.log("Data for user fetched successfully" )
+    userData.value = data;
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+  }
+});
+
+
+
 </script>
 
 <template>
@@ -20,11 +38,14 @@ function toggleMenu() {
             <span class="toggler-icon middle-bar"></span>
             <span class="toggler-icon bottom-bar"></span>
           </button>
-          <div class="navbar-title">Max Muster</div>
-          <div class="navbar-avatar">
-            <img id="personapicture" src="/src/assets/personaavatar.svg" alt="Avatar Picture" srcset="">
+          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>          <div class="navbar-avatar">
+            <img id="personapicture"
+                 src="@/assets/personaavatar.svg"
+                 alt="Avatar Picture"
+                 srcset="">
           </div>
         </div>
+
 
         <ul v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
           <div class="btn">
@@ -35,77 +56,85 @@ function toggleMenu() {
         </ul>
 
         <div class="logo">
-          <img src="/src/assets/bdologo.png" alt="" />
+          <img src="@/assets/bdologo.png" alt="" />
         </div>
       </nav>
 
   </header>
     <main>
-      <div class="container">
-        <div class="grid-item">Personalnummer</div>
-        <div class="grid-item">1234567890</div>
-        <div class="grid-item"></div>
+
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Personalnummer</div>
+      <div class="grid-item">{{ userData.personalnummer }}</div>
+      <div class="grid-item"></div>
+      </div>
+      <div v-else>Loading...</div>
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Vorname</div>
+      <div class="grid-item">{{ userData.vorname }}</div>
+      <div class="grid-item"></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Vorname</div>
-        <div class="grid-item">Max</div>
-        <div class="grid-item"></div>
+      <div v-if="userData" class="container">
+      <div class="grid-item">Nachname</div>
+      <div class="grid-item">{{ userData.nachname }}</div>
+      <div class="grid-item"></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Nachname</div>
-        <div class="grid-item">Muster</div>
-        <div class="grid-item"></div>
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Geburtsdatum</div>
+      <div class="grid-item">{{ userData.geburtsdatum }}</div>
+      <div class="grid-item"></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Geburtsdatum</div>
-        <div class="grid-item">01.01.2000</div>
-        <div class="grid-item"></div>
+      <div v-if="userData" class="container">
+      <div class="grid-item">Standort</div>
+      <div class="grid-item">{{ userData.standort }}</div>
+      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Standort</div>
-        <div class="grid-item">Düsseldorf</div>
-        <div class="grid-item"><img src="/src/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+      <div v-if="userData" class="container">
+      <div class="grid-item">PLZ</div>
+      <div class="grid-item">{{ userData.plz }}</div>
+      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">PLZ</div>
-        <div class="grid-item">1010</div>
-        <div class="grid-item"><img src="/src/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+      <div v-if="userData" class="container">
+      <div class="grid-item">Ort</div>
+      <div class="grid-item">{{ userData.ort }}</div>
+      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        </div>
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Straße</div>
+      <div class="grid-item">{{ userData.strasse }}</div>
+      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Ort</div>
-        <div class="grid-item">Wien</div>
-        <div class="grid-item"><img src="/src/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Hausnummer</div>
+      <div class="grid-item">{{ userData.hausnummer }}</div>
+      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Straße</div>
-        <div class="grid-item">Hauptstraße</div>
-        <div class="grid-item"><img src="/src/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+      <div v-if="userData" class="container">
+      <div class="grid-item">Skills</div>
+      <div class="grid-item">{{ userData.skills }}</div>
+      <div class="grid-item"></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Hausnummer</div>
-        <div class="grid-item">12/3/2</div>
-        <div class="grid-item"><img src="/src/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+
+      <div v-if="userData" class="container">
+      <div class="grid-item">Karrierelevel</div>
+      <div class="grid-item">{{ userData.karrierelevel }}</div>
+      <div class="grid-item"></div>
       </div>
 
-      <div class="container">
-        <div class="grid-item">Skills</div>
-        <div class="grid-item">Java</div>
-        <div class="grid-item"></div>
-      </div>
 
-      <div class="container">
-        <div class="grid-item">Karrierelevel</div>
-        <div class="grid-item">Junior</div>
-        <div class="grid-item"></div>
-      </div>
     </main>
 
 
@@ -172,6 +201,7 @@ nav {
   padding: 0;
 }
 
+
 nav .logo {
   display: flex;
   justify-content: center;
@@ -205,7 +235,7 @@ nav {
   width: 100%;
   text-decoration: none;
   font-size: 2.1rem;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   color: black;
 
 }
@@ -234,10 +264,23 @@ nav {
 }
 
 nav ul {
-  display: none; /* By default, the menu is hidden */
+  display: none;
 }
 
+
+
+
+
+
+
+
+
 @media (max-width: 900px) {
+
+  .navbar-title-desktop,
+  .navbar-avatar{
+    display: none;
+  }
 
   main{
     font-size: 1.2em;
@@ -249,28 +292,28 @@ nav ul {
 
 
   nav ul {
-    display: block; /* Make sure to set it to block or flex as per your design when visible */
-    position: absolute; /* Optional: depending on your layout, you might want absolute positioning */
-    top: 60px; /* Adjust based on your nav bar height */
+    display: block;
+    position: absolute;
+    top: 60px;
     left: 0;
     right: 0;
-    background-color: #f8f9fa; /* Light background for the dropdown */
-    padding: 20px; /* Padding for aesthetics */
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1); /* Optional: for better visibility */
-    z-index: 1000; /* Make sure it's above other content */
+    background-color: #f8f9fa;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    z-index: 1000;
   }
 
   .mobile-navbar {
-    display: flex; /* Ensures the mobile navbar is visible */
+    display: flex;
   }
 
   .navbar-toggler.collapsed .top-bar,
   .navbar-toggler.collapsed .bottom-bar {
-    transform: rotate(0deg); /* Reset rotation when collapsed */
+    transform: rotate(0deg);
   }
 
   .navbar-toggler.collapsed .middle-bar {
-    opacity: 1; /* Make middle bar visible when collapsed */
+    opacity: 1;
   }
 
   .navbar-title {
@@ -286,8 +329,8 @@ nav ul {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 30px; /* Width of the button */
-  height: 25px; /* Height of the button */
+  width: 30px;
+  height: 25px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -300,7 +343,7 @@ nav ul {
   display: block;
   width: 100%;
   height: 3px;
-  background-color: #fff; /* Change this as needed */
+  background-color: #fff;
   transition: all 0.3s ease-in-out;
 }
 
