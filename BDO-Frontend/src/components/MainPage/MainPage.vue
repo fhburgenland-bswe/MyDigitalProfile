@@ -13,13 +13,16 @@ function toggleMenu() {
 
 const userData = ref<any>(null);
 
+const error = ref(null);
+
 onMounted(async () => {
   try {
     const data = await getUserData();
-    console.log("Data for user fetched successfully" )
+    console.log("Data for user fetched successfully")
     userData.value = data;
-  } catch (error) {
-    console.error('Error fetching user data:', error);
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+    error.value = 'Error fetching user data: ' + err.message;
   }
 });
 
@@ -62,7 +65,7 @@ onMounted(async () => {
   </header>
     <main>
 
-
+      <div v-if="error">{{ error }}</div>
       <div v-if="userData" class="container">
       <div class="grid-item">Personalnummer</div>
       <div class="grid-item">{{ userData.personalnummer }}</div>
