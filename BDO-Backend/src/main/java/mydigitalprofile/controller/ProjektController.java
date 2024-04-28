@@ -41,13 +41,6 @@ public class ProjektController {
 		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
-	@PutMapping("admin/project/update/{projectid}/{mitarbeiterid}")
-	public ResponseEntity<String> addMitarbeiterTorojectById(@PathVariable long projectid,
-			@PathVariable long mitarbeiterid) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
-	}
-
 	@DeleteMapping("admin/delete/project/{projectid}")
 	public ResponseEntity<String> deleteProject(@PathVariable long projectid) {
 		// TODO:

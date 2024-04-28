@@ -1,8 +1,6 @@
 package mydigitalprofile.model.dto;
 
-import java.util.Date;
 
-import javax.persistence.Column;
 
 public class ProjektDto {
 
@@ -13,7 +11,7 @@ public class ProjektDto {
 	private String beschreibung;
 
 	/**
-	 * 
+	 *
 	 */
 	public ProjektDto() {
 		super();
