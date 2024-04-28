@@ -21,13 +21,13 @@ import mydigitalprofile.model.dto.loginDto;
 @RequestMapping(path = "/api/")
 public class MitarbeiterController {
 
-	@PostMapping("register")
+	@PostMapping(path = "register")
 	public ResponseEntity<String> createMitarbeiter(@RequestBody MitarbeiterDto mitarbeiterDto) {
 		// TODO:
 		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
-	@PostMapping("login")
+	@PostMapping(path = "login")
 	public ResponseEntity<String> login(@RequestBody loginDto loginDto) {
 		// TODO:
 		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
@@ -41,7 +41,7 @@ public class MitarbeiterController {
 
 	@GetMapping(path = "admin/all")
 	public ResponseEntity<String> getUsers() {
-		// TODO:
+		// TODO
 		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
@@ -56,7 +56,7 @@ public class MitarbeiterController {
 		// TODO:
 		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
 	}
-	
+
 	@PutMapping(path = "admin/updateMitarbeiterSkill/{id}")
 	public ResponseEntity<String> updateUserSkill(@RequestBody List<String> skills) {
 		// TODO:
