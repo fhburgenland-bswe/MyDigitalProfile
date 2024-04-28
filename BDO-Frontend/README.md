@@ -28,6 +28,11 @@ npm install
 npm run dev
 ```
 
+### Install JSON Server
+```sh
+npm install -g json-server
+```
+
 ### Run JSON Server
 
 ```sh
