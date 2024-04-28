@@ -40,10 +40,10 @@ json-server --watch db.json --port 3001
 npm run build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### Run Unit Tests with [Vitest](https://vitest.dev/) including coverage report
 
 ```sh
-npm run test:unit
+npm run test:coverage
 ```
 
 ### Lint with [ESLint](https://eslint.org/)
