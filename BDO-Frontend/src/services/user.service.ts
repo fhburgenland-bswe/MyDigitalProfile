@@ -14,3 +14,13 @@ export const getUserData = async (): Promise<any> => {
         throw error;
     }
 };
+
+export const updateUserData = async (userId: string, data: any): Promise<any> => {
+    try {
+        const response = await axios.patch(`${BASE_URL}/users/${userId}`, data);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating user data:', error);
+        throw error;
+    }
+};
