@@ -151,7 +151,8 @@ input[type="text"]:focus {
 }
 
 label {
-  margin-bottom: 5px;
+  display: block;
+  margin-bottom: 10px;
   font-weight: bold;
 }
 
