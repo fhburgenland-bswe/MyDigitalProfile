@@ -8,15 +8,14 @@
       "vorname": "Martin",
       "nachname": "Muster",
       "geburtsdatum": "01.01.1999",
-      "standort": "Düsseldorf",
-      "plz": "1030",
+      "standort": "A",
+      "plz": "1010",
       "ort": "Wien",
       "strasse": "Wienerstraße",
       "hausnummer": "12/3/2",
       "skills": "VueJS, Java",
       "karrierelevel": "Senior"
     },
-
     {
       "id": "2",
       "email": "julia.beispiel@bdo.de",
@@ -33,6 +32,5 @@
       "skills": "JavaScript",
       "karrierelevel": "Junior"
     }
-
   ]
 }

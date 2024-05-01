@@ -1,15 +1,22 @@
 <script setup lang="ts">
 
 import { ref, onMounted } from 'vue';
-import { getUserData } from '@/services/user.service';
+import { getUserData, updateUserData } from '@/services/user.service';
+import ModalComponent from '@/components/Modal/Modal.vue';
+import { toast } from "vue3-toastify";
 
 const isMenuOpen = ref(false);
+const isModalVisible = ref(false);
+const editableField = ref('');
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
 
-
+function showModal(field) {
+  editableField.value = field;
+  isModalVisible.value = true;
+}
 
 const userData = ref<any>(null);
 
@@ -26,6 +33,23 @@ onMounted(async () => {
   }
 });
 
+async function handleUpdate({ field, value }) {
+  try {
+    await updateUserData(userData.value.id, { [field]: value });
+    userData.value[field] = value;
+    toast("Daten erfolgreich geändert", {
+      "theme": "colored",
+      "type": "success",
+      "position": "bottom-center",
+      "autoClose": 2000,
+      "dangerouslyHTMLString": true,
+    })
+    console.log('Data updated successfully');
+  } catch (error) {
+    console.error('Error updating user data:', error);
+  }
+  isModalVisible.value = false;
+}
 
 
 </script>
@@ -93,34 +117,44 @@ onMounted(async () => {
       </div>
 
       <div v-if="userData" class="container">
-      <div class="grid-item">Standort</div>
-      <div class="grid-item">{{ userData.standort }}</div>
-      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        <div class="grid-item">Standort</div>
+        <div class="grid-item">{{ userData.standort }}</div>
+        <div class="grid-item ">
+          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('standort')" class="editable-icon">
+        </div>
       </div>
 
       <div v-if="userData" class="container">
       <div class="grid-item">PLZ</div>
       <div class="grid-item">{{ userData.plz }}</div>
-      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        <div class="grid-item">
+          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('plz')" class="editable-icon">
+        </div>
       </div>
 
       <div v-if="userData" class="container">
       <div class="grid-item">Ort</div>
       <div class="grid-item">{{ userData.ort }}</div>
-      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        <div class="grid-item">
+          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('ort')" class="editable-icon">
+        </div>
         </div>
 
       <div v-if="userData" class="container">
       <div class="grid-item">Straße</div>
       <div class="grid-item">{{ userData.strasse }}</div>
-      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        <div class="grid-item">
+          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('strasse')" class="editable-icon">
+        </div>
       </div>
 
 
       <div v-if="userData" class="container">
       <div class="grid-item">Hausnummer</div>
       <div class="grid-item">{{ userData.hausnummer }}</div>
-      <div class="grid-item"><img src="@/assets/pencil.svg" alt="Pencil Icon" srcset=""></div>
+        <div class="grid-item">
+          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('hausnummer')" class="editable-icon">
+        </div>
       </div>
 
       <div v-if="userData" class="container">
@@ -140,10 +174,22 @@ onMounted(async () => {
     </main>
 
 
+  <ModalComponent :field="editableField" :isVisible="isModalVisible" @update="handleUpdate" @close="isModalVisible = false" />
 
 </template>
 
 <style scoped>
+
+.editable-icon {
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: transform 0.3s ease;
+}
+
+.editable-icon:hover {
+  transform: scale(1.1); /* Optional: Adds a slight zoom effect on hover */
+  filter: brightness(0) saturate(100%) invert(27%) sepia(99%) saturate(6357%) hue-rotate(191deg) brightness(91%) contrast(92%);
+
+}
 
 * {
   font-family: Poppins, serif;
