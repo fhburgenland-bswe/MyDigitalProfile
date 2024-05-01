@@ -1,11 +1,77 @@
+<script setup>
+import { ref, defineEmits, computed } from 'vue';
+
+const props = defineProps({
+  field: String,
+  isVisible: Boolean
+});
+const emits = defineEmits(['update', 'close']);
+
+const newValue = ref('');
+
+const fieldLabels = {
+  standort: "Standort",
+  plz: "PLZ",
+  ort: "Ort",
+  strasse: "Straße",
+  hausnummer: "Hausnummer"
+};
+
+const labelText = computed(() => `Neuer Wert für ${fieldLabels[props.field] || 'Feld'}`);
+
+const regexPatterns = {
+  standort: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
+  plz: /^\d+$/, // Only numbers
+  ort: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
+  strasse: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
+  hausnummer: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/ // Numbers, letters, and specific special characters
+};
+
+const errorMessages = {
+  standort: "Der Standort darf nur Buchstaben enthalten.",
+  plz: "Die PLZ darf nur Zahlen enthalten.",
+  ort: "Der Ort darf nur Buchstaben enthalten.",
+  strasse: "Die Straße darf nur Buchstaben enthalten.",
+  hausnummer: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten."
+};
+
+const currentPattern = computed(() => regexPatterns[props.field] || /.*/);
+
+function closeModal() {
+  emits('close');
+  newValue.value = '';
+}
+
+function validateInput(value) {
+  return currentPattern.value.test(value);
+}
+
+const errorMessage = ref('');
+
+function submitData() {
+  if (validateInput(newValue.value)) {
+    emits('update', { field: props.field, value: newValue.value });
+    newValue.value = '';
+    errorMessage.value = '';
+    closeModal();
+  } else {
+    errorMessage.value = errorMessages[props.field] || 'Ungültige Eingabe.';
+  }
+}
+
+
+</script>
+
+
 <template>
   <div v-if="isVisible" class="modal">
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <form @submit.prevent="submitData" class="modal-form">
         <div class="input-group">
-          <label for="value">Neuer Wert:</label>
+          <label for="value">{{ labelText }}</label>
           <input v-model="newValue" type="text" id="value" name="value" required>
+          <span v-if="errorMessage" class="error-message">{{ errorMessage }}</span>
         </div>
         <div class="button-group">
           <button type="button" class="cancel-btn" @click="closeModal">Abbrechen</button>
@@ -16,28 +82,15 @@
   </div>
 </template>
 
-<script setup>
-import { ref, defineEmits } from 'vue';
 
-const props = defineProps({
-  field: String,
-  isVisible: Boolean
-});
-const emits = defineEmits(['update', 'close']);
-
-const newValue = ref('');
-
-function closeModal() {
-  emits('close');
-}
-
-function submitData() {
-  emits('update', { field: props.field, value: newValue.value });
-  newValue.value = ''; // Reset input after submission
-}
-</script>
 
 <style scoped>
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+}
+
 .modal {
   position: fixed;
   left: 0;
