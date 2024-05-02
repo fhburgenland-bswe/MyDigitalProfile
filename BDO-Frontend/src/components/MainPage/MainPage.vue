@@ -2,20 +2,39 @@
 
 import { ref, onMounted } from 'vue';
 import { getUserData, updateUserData } from '@/services/user.service';
-import ModalComponent from '@/components/Modal/Modal.vue';
+import ModalComponent from '@/components/Modals/UpdateDataModal.vue';
 import { toast } from "vue3-toastify";
+import CreateUserModal from '@/components/Modals/CreateUserModal.vue';
+
 
 const isMenuOpen = ref(false);
 const isModalVisible = ref(false);
 const editableField = ref('');
+const isCreateUserModalVisible = ref(false);
+const avatarMenuOpen = ref(false);
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
 
+function toggleAvatarMenu() {
+  avatarMenuOpen.value = !avatarMenuOpen.value;
+  console.log("Avatar Menu Open: ", avatarMenuOpen.value)
+}
+
+
 function showModal(field) {
   editableField.value = field;
   isModalVisible.value = true;
+}
+
+function showCreateUserModal() {
+  isCreateUserModalVisible.value = true;
+  isMenuOpen.value = false;
+}
+
+function closeCreateUserModal() {
+  isCreateUserModalVisible.value = false;
 }
 
 const userData = ref<any>(null);
@@ -64,7 +83,8 @@ async function handleUpdate({ field, value }) {
             <span class="toggler-icon middle-bar"></span>
             <span class="toggler-icon bottom-bar"></span>
           </button>
-          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>          <div class="navbar-avatar">
+          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+          <div class="navbar-avatar">
             <img id="personapicture"
                  src="@/assets/personaavatar.svg"
                  alt="Avatar Picture"
@@ -77,12 +97,29 @@ async function handleUpdate({ field, value }) {
           <div class="btn">
             <i class="fas fa-times close-btn"></i>
           </div>
-          <li>Entry 1</li>
-          <li>Entry 2</li>
+          <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
+          <li>Logout</li>
         </ul>
+
+        <div class="desktop-navbar">
+          <div style="cursor: pointer; position: relative;">
+            <img @click="toggleAvatarMenu" id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture">
+            <ul v-if="avatarMenuOpen" class="avatar-dropdown-menu">
+              <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
+              <li>Logout</li>
+            </ul>
+          </div>
+          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+        </div>
+
+
 
         <div class="logo">
           <img src="@/assets/bdologo.png" alt="" />
+        </div>
+
+        <div class="emptydiv">
+
         </div>
       </nav>
 
@@ -175,18 +212,75 @@ async function handleUpdate({ field, value }) {
 
 
   <ModalComponent :field="editableField" :isVisible="isModalVisible" @update="handleUpdate" @close="isModalVisible = false" />
+  <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
 
 </template>
 
 <style scoped>
 
+
+#personapicture:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.avatar-dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  background-color: #ffffff; /* White background */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px; /* Rounded corners */
+  min-width: 300px;
+  width: fit-content;
+  transition: visibility 0.3s, opacity 0.3s ease-in-out;
+  visibility: hidden;
+  margin-top: -10px;
+}
+
+.avatar-dropdown-menu li {
+  padding: 12px 16px;
+  width: 100%;
+  cursor: pointer;
+  list-style-type: none;
+  transition: background-color 0.3s ease;
+}
+
+.avatar-dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
+
+.avatar-dropdown-menu li:not(:last-child) {
+  border-bottom: 1px solid #eeeeee;
+}
+
+.desktop-navbar img:hover + .avatar-dropdown-menu,
+.avatar-dropdown-menu:hover {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.desktop-navbar{
+  float: left;
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 30%;
+}
+
+.emptydiv{
+  width: 30%;
+}
+
+
+
 .editable-icon {
-  cursor: pointer; /* Change cursor to pointer on hover */
+  cursor: pointer;
   transition: transform 0.3s ease;
 }
 
 .editable-icon:hover {
-  transform: scale(1.1); /* Optional: Adds a slight zoom effect on hover */
+  transform: scale(1.1);
   filter: brightness(0) saturate(100%) invert(27%) sepia(99%) saturate(6357%) hue-rotate(191deg) brightness(91%) contrast(92%);
 
 }
@@ -238,6 +332,7 @@ body {
 header {
   padding: 0.5rem 0;
   margin: 0;
+  width: 100%;
 }
 
 
@@ -246,7 +341,12 @@ nav {
   justify-content: space-between;
   align-items: center;
   margin: 0;
-  padding: 0;
+  padding: 0 0;
+  width: 100%;
+  text-decoration: none;
+  font-size: 2.1rem;
+  letter-spacing: 2px;
+  color: black;
 }
 
 
@@ -255,7 +355,9 @@ nav .logo {
   justify-content: center;
   align-items: center;
   margin: auto;
+  width: 30%;
 }
+
 
 .logo img {
   width: 347px;
@@ -267,26 +369,23 @@ nav .logo {
 }
 
 nav ul {
+  margin-top: 10px;
   display: flex;
   align-items: center;
   list-style-type: none;
+  width: 100%;
 }
 
 nav ul li {
   display: flex;
   margin: 0 0.2rem;
   align-items: center;
-  padding: 0;
+  padding: 0.5rem 0;
+  font-size: 1rem;
 }
 
-nav {
-  width: 100%;
-  text-decoration: none;
-  font-size: 2.1rem;
-  letter-spacing: 2px;
-  color: black;
 
-}
+
 
 #personapicture{
   width: 100px;
@@ -311,9 +410,6 @@ nav {
   align-items: center;
 }
 
-nav ul {
-  display: none;
-}
 
 
 
@@ -324,6 +420,17 @@ nav ul {
 
 
 @media (max-width: 900px) {
+
+  .emptydiv{
+    display: none;
+  }
+  nav .logo{
+    display: none;
+  }
+
+  .desktop-navbar{
+    display: none;
+  }
 
   .navbar-title-desktop,
   .navbar-avatar{
@@ -348,11 +455,13 @@ nav ul {
     background-color: #f8f9fa;
     padding: 20px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    width: 100%;
     z-index: 1000;
   }
 
   .mobile-navbar {
     display: flex;
+    width: 100%;
   }
 
   .navbar-toggler.collapsed .top-bar,

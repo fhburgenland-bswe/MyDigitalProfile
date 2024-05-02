@@ -8,10 +8,10 @@
       "vorname": "Martin",
       "nachname": "Muster",
       "geburtsdatum": "01.01.1999",
-      "standort": "A",
+      "standort": "Wien",
       "plz": "1010",
       "ort": "Wien",
-      "strasse": "Wienerstraße",
+      "strasse": "Hauptstraße",
       "hausnummer": "12/3/2",
       "skills": "VueJS, Java",
       "karrierelevel": "Senior"
@@ -31,6 +31,22 @@
       "hausnummer": "34/5/6",
       "skills": "JavaScript",
       "karrierelevel": "Junior"
+    },
+    {
+      "id": "4aa5",
+      "personalnummer": "123456",
+      "vorname": "Franz",
+      "nachname": "Test",
+      "geburtsdatum": "01.01.2012",
+      "email": "franz.test@aon.de",
+      "password": "12345",
+      "standort": "Düsseldorf",
+      "plz": "3100",
+      "ort": "Wien",
+      "strasse": "Straße",
+      "hausnummer": "1/2",
+      "skills": "Java",
+      "karrierelevel": "Senior"
     }
   ]
 }
