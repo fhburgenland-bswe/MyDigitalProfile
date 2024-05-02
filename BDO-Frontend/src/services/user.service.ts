@@ -24,3 +24,13 @@ export const updateUserData = async (userId: string, data: any): Promise<any> =>
         throw error;
     }
 };
+
+export const createUser = async (userData: any): Promise<any> => {
+    try {
+        const response = await axios.post(`${BASE_URL}/users`, userData);
+        return response.data;
+    } catch (error) {
+        console.error('Error creating user:', error);
+        throw error;
+    }
+};
