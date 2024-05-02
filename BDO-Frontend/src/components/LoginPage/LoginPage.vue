@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { login } from '@/services/login.service';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { toast } from "vue3-toastify";
 
 
@@ -11,6 +11,16 @@ interface LoginResponse {
 }
 
 const router = useRouter();
+const route = useRoute();
+
+if (route.query.loggedOut === 'true') {
+  toast("Sie wurden erfolgreich abgemeldet.", {
+    theme: "colored",
+    type: "info",
+    autoClose: 2000,
+    position: "bottom-center",
+  });
+}
 
 const handleSubmit = async (event: Event) => {
   event.preventDefault();
