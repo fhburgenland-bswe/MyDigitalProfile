@@ -66,7 +66,6 @@ function submitData() {
 <template>
   <div v-if="isVisible" class="modal">
     <div class="modal-content">
-      <span class="close" @click="closeModal">&times;</span>
       <form @submit.prevent="submitData" class="modal-form">
         <div class="input-group">
           <label for="value">{{ labelText }}</label>
