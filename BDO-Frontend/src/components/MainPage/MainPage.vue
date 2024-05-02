@@ -1,8 +1,8 @@
 <script setup lang="ts">
-
 import { ref, onMounted } from 'vue';
-import { getUserData, updateUserData } from '@/services/user.service';
+import { getUserData, updateUserData, logout } from '@/services/user.service';
 import ModalComponent from '@/components/Modals/UpdateDataModal.vue';
+import { useRouter } from 'vue-router';
 import { toast } from "vue3-toastify";
 import CreateUserModal from '@/components/Modals/CreateUserModal.vue';
 
@@ -12,6 +12,7 @@ const isModalVisible = ref(false);
 const editableField = ref('');
 const isCreateUserModalVisible = ref(false);
 const avatarMenuOpen = ref(false);
+const router = useRouter();
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
@@ -19,9 +20,12 @@ function toggleMenu() {
 
 function toggleAvatarMenu() {
   avatarMenuOpen.value = !avatarMenuOpen.value;
-  console.log("Avatar Menu Open: ", avatarMenuOpen.value)
 }
 
+function handleLogout() {
+  logout();
+  router.push({ path: '/', query: { loggedOut: 'true' } });
+}
 
 function showModal(field) {
   editableField.value = field;
@@ -42,13 +46,18 @@ const userData = ref<any>(null);
 const error = ref(null);
 
 onMounted(async () => {
-  try {
-    const data = await getUserData();
-    console.log("Data for user fetched successfully")
-    userData.value = data;
-  } catch (err) {
-    console.error('Error fetching user data:', err);
-    error.value = 'Error fetching user data: ' + err.message;
+  const userId = localStorage.getItem('userId');
+  if (!userId) {
+    handleLogout();
+  } else {
+    try {
+      const data = await getUserData();
+      userData.value = data;
+    } catch (err) {
+      console.error('Error fetching user data:', err);
+      error.value = 'Error fetching user data: ' + err.message;
+      console.log('Error set in data:', error.value);
+    }
   }
 });
 
@@ -93,12 +102,12 @@ async function handleUpdate({ field, value }) {
         </div>
 
 
-        <ul v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
+        <ul class="mobile-menu" v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
           <div class="btn">
             <i class="fas fa-times close-btn"></i>
           </div>
           <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
-          <li>Logout</li>
+          <li  @click="handleLogout">Logout</li>
         </ul>
 
         <div class="desktop-navbar">
@@ -106,7 +115,7 @@ async function handleUpdate({ field, value }) {
             <img @click="toggleAvatarMenu" id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture">
             <ul v-if="avatarMenuOpen" class="avatar-dropdown-menu">
               <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
-              <li>Logout</li>
+              <li  @click="handleLogout">Logout</li>
             </ul>
           </div>
           <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
@@ -227,9 +236,9 @@ async function handleUpdate({ field, value }) {
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: #ffffff; /* White background */
+  background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-radius: 8px; /* Rounded corners */
+  border-radius: 8px;
   min-width: 300px;
   width: fit-content;
   transition: visibility 0.3s, opacity 0.3s ease-in-out;
@@ -519,5 +528,19 @@ nav ul li {
   transform-origin: 10% 90%;
 }
 
+.mobile-menu{
+  left:0;
+  right: 0;
+  padding: 0;
+}
+
+.mobile-menu li{
+  margin: 0;
+  cursor: pointer;
+  padding: 15px;
+}
+.mobile-menu li:hover {
+  background-color: #f0f0f0;
+}
 
 </style>
