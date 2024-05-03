@@ -88,7 +88,6 @@ function submitNewUser() {
       alert("Benutzer wurde erfolgreich angelegt");
       closeModal();
     }).catch(error => {
-      // Display an alert with the error message, which could include the "email exists" error
       alert(error.message);
     });
   } else {
