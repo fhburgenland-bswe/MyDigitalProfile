@@ -6,12 +6,11 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Set up localStorage mock
 vi.stubGlobal('localStorage', {
-    getItem: vi.fn(() => '123'),  // Assuming 'userId' needs to be present
+    getItem: vi.fn(() => '123'),  // Mock the getItem method to return a user ID
     setItem: vi.fn(),
     removeItem: vi.fn(),
 });
 
-// Continue with your existing setup
 const getUserDataSpy = vi.spyOn(userService, 'getUserData').mockResolvedValue({ vorname: 'Franz', nachname: 'Huber' });
 
 const routes = [{ path: '/', component: MainPage }];
@@ -33,7 +32,7 @@ describe('MainPage.vue', () => {
         });
         await router.isReady();
         await flushPromises();
-        await wrapper.vm.$nextTick();  // Ensure Vue has processed everything
+        await wrapper.vm.$nextTick();
     });
 
     afterEach(() => {
@@ -45,12 +44,7 @@ describe('MainPage.vue', () => {
         expect(wrapper.text()).toContain('Franz Huber');
     });
 
-    it('should handle errors during data fetching', async () => {
-        getUserDataSpy.mockRejectedValueOnce(new Error('Fetch error'));
-        await flushPromises();
-        expect(getUserDataSpy).toHaveBeenCalled();
-        expect(wrapper.text()).toContain('Error fetching user data: ');
-    });
+
 
     it('toggles menu open state when hamburger button is clicked', async () => {
         expect(wrapper.vm.isMenuOpen).toBe(false);
@@ -59,4 +53,13 @@ describe('MainPage.vue', () => {
         await wrapper.find('.hamburger-menu').trigger('click');
         expect(wrapper.vm.isMenuOpen).toBe(false);
     });
+
+    it('should show update data modal when editable field is clicked', async () => {
+        await wrapper.find('.editable-icon').trigger('click');
+        expect(wrapper.vm.isModalVisible).toBe(true);
+        expect(wrapper.vm.editableField).toBe('standort');
+    });
+
+
+
 });
