@@ -10,7 +10,7 @@ export default mergeConfig(
             enabled: true,
             reporter: ['text', 'json', 'html'],
             include: ['src/**/*.ts', 'src/**/*.vue'],
-            exclude: ['node_modules', 'tests', 'src/main.ts', 'src/**/*.d.ts']
+            exclude: ['node_modules', 'tests', 'src/main.ts', 'src/**/*.d.ts', 'src/App.vue', 'src/router.ts' ]
         },
       environment: 'jsdom',
       exclude: [...configDefaults.exclude, 'e2e/*'],

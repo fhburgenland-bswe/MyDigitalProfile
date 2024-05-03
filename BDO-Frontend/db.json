@@ -24,10 +24,10 @@
       "vorname": "Julia",
       "nachname": "Beispiel",
       "geburtsdatum": "02.02.2000",
-      "standort": "Berlin",
+      "standort": "Wien",
       "plz": "1040",
       "ort": "Berlin",
-      "strasse": "Berlinerstraße",
+      "strasse": "Nebenstraße",
       "hausnummer": "34/5/6",
       "skills": "JavaScript",
       "karrierelevel": "Junior"
@@ -47,6 +47,22 @@
       "hausnummer": "1/2",
       "skills": "Java",
       "karrierelevel": "Senior"
+    },
+    {
+      "id": "071f",
+      "email": "sebastian.huber@bdo.de",
+      "password": "123456",
+      "personalnummer": "12345",
+      "vorname": "Sebastian",
+      "nachname": "Huber",
+      "geburtsdatum": "01.12.1992",
+      "standort": "Tirol",
+      "plz": "2020",
+      "ort": "Ortschaft",
+      "strasse": "Straße",
+      "hausnummer": "1a",
+      "skills": "Java",
+      "karrierelevel": "Junior"
     }
   ]
 }
