@@ -50,7 +50,7 @@ describe('LoginPage.vue', () => {
         wrapper.unmount();
     });
 
-    it('should handle login success', async () => {
+    it('should handle login with correct email and password successfully', async () => {
         const mockLoginResponse = { success: true, message: 'Login successful', userId: 1 };
         login.mockResolvedValue(mockLoginResponse);
         const emailInput = wrapper.find('input[name="email"]');
@@ -66,7 +66,7 @@ describe('LoginPage.vue', () => {
         expect(mockRouter.push).toHaveBeenCalledWith('/Main');
     });
 
-    it('should handle login failure', async () => {
+    it('should handle login failure with incorrect email and password', async () => {
         const mockLoginResponse = { success: false, message: 'Login failed' };
         login.mockResolvedValue(mockLoginResponse);
         const form = wrapper.find('form');
