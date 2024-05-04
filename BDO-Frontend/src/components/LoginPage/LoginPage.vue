@@ -14,7 +14,7 @@ const router = useRouter();
 const route = useRoute();
 
 if (route.query.loggedOut === 'true') {
-  toast("Sie wurden erfolgreich abgemeldet.", {
+  toast("Sie sind abgemeldet.", {
     theme: "colored",
     type: "info",
     autoClose: 2000,
