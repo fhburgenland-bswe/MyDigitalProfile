@@ -28,6 +28,13 @@ npm install
 npm run dev
 ```
 
+## Before being able to compile the front end, you must install Toastify and JSON Server!
+
+### Install Toastify
+```sh
+npm install --save vue3-toastify
+```
+
 ### Install JSON Server
 ```sh
 npm install -g json-server
