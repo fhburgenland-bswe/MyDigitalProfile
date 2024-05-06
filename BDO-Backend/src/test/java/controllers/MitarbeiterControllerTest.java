@@ -44,7 +44,7 @@ public class MitarbeiterControllerTest {
     @Test
     public void registerAndGetUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack1", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR_MANAGER);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -62,7 +62,7 @@ public class MitarbeiterControllerTest {
     @Test
     public void getAllUsersTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-2", "Jack", "Mustermann", "jack2", "password",
-                "11.01.2011", "TestStr", "2/1", "1040", "Wien", "Wien", Rolle.Admin, CareerLevel.SENIOR);
+                "11.01.2011", "TestStr", "2/1", "1040", "Wien", "Wien", Rolle.Admin, CareerLevel.DIRECTOR);
         controller.createMitarbeiter(mitarbeiterDto);
 
         ResponseEntity<List<MitarbeiterDto>> response = controller.getUsers();
@@ -76,14 +76,14 @@ public class MitarbeiterControllerTest {
     @Test
     public void updateUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack3", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.MANAGER);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(200, response.getStatusCodeValue());
 
         MitarbeiterDto dto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack3", "password",
-                "11.11.2011", "newTestStrasse", "1/1", "1050", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR);
+                "11.11.2011", "newTestStrasse", "1/1", "1050", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.MANAGER);
 
         ResponseEntity<String> response2 = controller.updateUser("jack3", dto);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
@@ -107,7 +107,7 @@ public class MitarbeiterControllerTest {
     public void updateUserAsAdminTest() {
 
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-5", "Jack", "Mustermann", "jack4", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR_CONSULTANT);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -128,7 +128,7 @@ public class MitarbeiterControllerTest {
     @Test
     public void addSkillsAndDeleteUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-5", "Jack", "Mustermann", "jack5", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR_CONSULTANT);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
