@@ -1,6 +1,6 @@
 package mydigitalprofile.model;
 
 public enum Rolle {
-	TeamLeiter, Mitarbeiter
+	Admin, TeamLeiter, Mitarbeiter
 
 }

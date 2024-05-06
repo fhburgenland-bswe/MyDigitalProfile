@@ -1,5 +1,8 @@
 package mydigitalprofile.model.dto;
 
+import mydigitalprofile.model.CareerLevel;
+import mydigitalprofile.model.Rolle;
+
 public class MitarbeiterDto {
 
 	private String pnr;
@@ -12,9 +15,12 @@ public class MitarbeiterDto {
 	private String hausNr;
 	private String plz;
 	private String ort;
+	private String standort;
+	private Rolle rolle = Rolle.Mitarbeiter;
+	private CareerLevel karriereLevel = CareerLevel.UNBEKANNT;
 
 	/**
-	 * 
+	 *
 	 */
 	public MitarbeiterDto() {
 		super();
@@ -31,9 +37,13 @@ public class MitarbeiterDto {
 	 * @param hausNr
 	 * @param plz
 	 * @param ort
+	 * @param standort
+	 * @param rolle
+	 * @param karriereLevel
 	 */
 	public MitarbeiterDto(String pnr, String vorname, String nachname, String username, String passwort,
-			String geburtsdatum, String strasse, String hausNr, String plz, String ort) {
+						  String geburtsdatum, String strasse, String hausNr, String plz, String ort, String standort, Rolle rolle,
+						  CareerLevel karriereLevel) {
 		super();
 		this.pnr = pnr;
 		this.vorname = vorname;
@@ -45,6 +55,40 @@ public class MitarbeiterDto {
 		this.hausNr = hausNr;
 		this.plz = plz;
 		this.ort = ort;
+		this.standort = standort;
+		this.rolle = rolle;
+		this.karriereLevel = karriereLevel;
+	}
+
+
+
+	/**
+	 * @param pnr
+	 * @param vorname
+	 * @param nachname
+	 * @param username
+	 * @param strasse
+	 * @param hausNr
+	 * @param plz
+	 * @param ort
+	 * @param standort
+	 * @param rolle
+	 * @param karriereLevel
+	 */
+	public MitarbeiterDto(String pnr, String vorname, String nachname, String username,
+						  String strasse, String hausNr, String plz, String ort, String standort, Rolle rolle, CareerLevel karriereLevel) {
+		super();
+		this.pnr = pnr;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.username = username;
+		this.strasse = strasse;
+		this.hausNr = hausNr;
+		this.plz = plz;
+		this.ort = ort;
+		this.standort = standort;
+		this.rolle = rolle;
+		this.karriereLevel = karriereLevel;
 	}
 
 	/**
@@ -185,6 +229,48 @@ public class MitarbeiterDto {
 	 */
 	public void setOrt(String ort) {
 		this.ort = ort;
+	}
+
+	/**
+	 * @return the standort
+	 */
+	public String getStandort() {
+		return standort;
+	}
+
+	/**
+	 * @param standort the standort to set
+	 */
+	public void setStandort(String standort) {
+		this.standort = standort;
+	}
+
+	/**
+	 * @return the rolle
+	 */
+	public Rolle getRolle() {
+		return rolle;
+	}
+
+	/**
+	 * @param rolle the rolle to set
+	 */
+	public void setRolle(Rolle rolle) {
+		this.rolle = rolle;
+	}
+
+	/**
+	 * @return the karriereLevel
+	 */
+	public CareerLevel getKarriereLevel() {
+		return karriereLevel;
+	}
+
+	/**
+	 * @param karriereLevel the karriereLevel to set
+	 */
+	public void setKarriereLevel(CareerLevel karriereLevel) {
+		this.karriereLevel = karriereLevel;
 	}
 
 }
