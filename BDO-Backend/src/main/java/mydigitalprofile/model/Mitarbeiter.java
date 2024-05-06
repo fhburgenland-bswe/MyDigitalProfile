@@ -1,6 +1,9 @@
 package mydigitalprofile.model;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +32,7 @@ public class Mitarbeiter {
 	@Column(unique = true, nullable = false)
 	private String username;
 
+	@JsonIgnore
 	@Column(nullable = false)
 	private String passwort;
 
@@ -38,13 +42,13 @@ public class Mitarbeiter {
 	@Column
 	private String standort;
 
-	@Column
-	private String karriereLevel;
+	@Enumerated(EnumType.STRING)
+	private CareerLevel karriereLevel = CareerLevel.UNBEKANNT;
 
 	@Enumerated(EnumType.STRING)
 	private Rolle rolle = Rolle.Mitarbeiter;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "address_id")
 	private Address address;
 
@@ -52,14 +56,14 @@ public class Mitarbeiter {
 	@JoinColumn(name = "team_id")
 	private Team team;
 
-	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private Set<Skill> skills = new HashSet<>();
 
-	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "mitarbeiter", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	private Set<KalenderEvent> kalenderEvents = new HashSet<>();
 
 	/**
-	 * 
+	 *
 	 */
 	public Mitarbeiter() {
 		super();
@@ -81,8 +85,8 @@ public class Mitarbeiter {
 	 * @param kalenderEvents
 	 */
 	public Mitarbeiter(String pnr, String vorname, String nachname, String username, String passwort, Date geburtsdatum,
-			String standort, String karriereLevel, Rolle rolle, Address address, Team team, Set<Skill> skills,
-			Set<KalenderEvent> kalenderEvents) {
+					   String standort, CareerLevel karriereLevel, Rolle rolle, Address address, Team team, Set<Skill> skills,
+					   Set<KalenderEvent> kalenderEvents) {
 		super();
 		this.pnr = pnr;
 		this.vorname = vorname;
@@ -99,14 +103,58 @@ public class Mitarbeiter {
 		this.kalenderEvents = kalenderEvents;
 	}
 
+
+
+
+	/**
+	 * Register constrctor.
+	 *
+	 * @param pnr
+	 * @param vorname
+	 * @param nachname
+	 * @param username
+	 * @param passwort
+	 * @param geburtsdatum
+	 * @param standort
+	 * @param karriereLevel
+	 * @param rolle
+	 * @param address
+	 */
+	public Mitarbeiter(String pnr, String vorname, String nachname, String username, String passwort, Date geburtsdatum,
+					   String standort, CareerLevel karriereLevel, Rolle rolle, Address address) {
+		super();
+		this.pnr = pnr;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.username = username;
+		this.passwort = passwort;
+		this.geburtsdatum = geburtsdatum;
+		this.standort = standort;
+		this.karriereLevel = karriereLevel;
+		this.rolle = rolle;
+		this.address = address;
+	}
+
 	public void addSkill(Skill skill) {
 		skills.add(skill);
 		skill.setMitarbeiter(this);
 	}
 
+	public void addSkills(Set<Skill> skillSet) {
+		for (Skill skill : skillSet) {
+			skills.add(skill);
+			skill.setMitarbeiter(this);
+		}
+	}
+
 	public void addKalenderEvent(KalenderEvent event) {
 		kalenderEvents.add(event);
 		event.setMitarbeiter(this);
+	}
+
+	public void removeKalenderEvent(KalenderEvent event) {
+		kalenderEvents.remove(event);
+		event.setMitarbeiter(null);
 	}
 
 	/**
@@ -196,14 +244,14 @@ public class Mitarbeiter {
 	/**
 	 * @return the karriereLevel
 	 */
-	public String getKarriereLevel() {
+	public CareerLevel getKarriereLevel() {
 		return karriereLevel;
 	}
 
 	/**
 	 * @param karriereLevel the karriereLevel to set
 	 */
-	public void setKarriereLevel(String karriereLevel) {
+	public void setKarriereLevel(CareerLevel karriereLevel) {
 		this.karriereLevel = karriereLevel;
 	}
 
