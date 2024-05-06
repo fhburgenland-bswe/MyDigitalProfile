@@ -17,7 +17,7 @@ public class MitarbeiterDto {
 	private String ort;
 	private String standort;
 	private Rolle rolle = Rolle.Mitarbeiter;
-	private CareerLevel karriereLevel = CareerLevel.UNDEFINED;
+	private CareerLevel karriereLevel = CareerLevel.UNBEKANNT;
 
 	/**
 	 *
