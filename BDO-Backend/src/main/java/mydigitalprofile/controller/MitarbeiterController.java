@@ -2,6 +2,7 @@ package mydigitalprofile.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,57 +16,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mydigitalprofile.model.dto.MitarbeiterDto;
 import mydigitalprofile.model.dto.MitarbeiterRolleDto;
-import mydigitalprofile.model.dto.loginDto;
+import mydigitalprofile.service.MitarbeiterService;
 
 @RestController
 @RequestMapping(path = "/api/")
 public class MitarbeiterController {
 
+	@Autowired
+	private MitarbeiterService mitarbeiterService;
+
 	@PostMapping(path = "register")
-	public ResponseEntity<String> createMitarbeiter(@RequestBody MitarbeiterDto mitarbeiterDto) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<Long> createMitarbeiter(@RequestBody MitarbeiterDto mitarbeiterDto) {
+		long userId = mitarbeiterService.saveNewMitarbeiter(mitarbeiterDto);
+		return new ResponseEntity<>(userId, HttpStatus.OK);
 	}
 
-	@PostMapping(path = "login")
-	public ResponseEntity<String> login(@RequestBody loginDto loginDto) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
-	}
 
 	@GetMapping(path = "user/{username}/user/{id}")
-	public ResponseEntity<String> getUser(@PathVariable String username, @PathVariable long id) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<MitarbeiterDto> getUser(@PathVariable String username, @PathVariable long id) {
+		MitarbeiterDto mitarbeiterDto = mitarbeiterService.findUserByIdAndUsername(username, id);
+		return new ResponseEntity<>(mitarbeiterDto, HttpStatus.OK);
 	}
 
 	@GetMapping(path = "admin/all")
-	public ResponseEntity<String> getUsers() {
-		// TODO
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<List<MitarbeiterDto>> getUsers() {
+		List<MitarbeiterDto> list = mitarbeiterService.getAllUsers();
+		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
 	@PutMapping(path = "user/{username}")
 	public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody MitarbeiterDto userDto) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+		mitarbeiterService.updateUser(username, userDto);
+		return new ResponseEntity<String>("User: " + username + " updated!", HttpStatus.OK);
 	}
 
 	@PutMapping(path = "admin/updateMitarbeiterRolle")
-	public ResponseEntity<String> updateUserAsAdmin(@RequestBody MitarbeiterRolleDto request) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	public ResponseEntity<String> updateUserRole(@RequestBody MitarbeiterRolleDto request) {
+		mitarbeiterService.updateUserRole(request);
+		return new ResponseEntity<>("User: " + request.getUsername() + " updated!", HttpStatus.OK);
 	}
 
-	@PutMapping(path = "admin/updateMitarbeiterSkill/{id}")
-	public ResponseEntity<String> updateUserSkill(@RequestBody List<String> skills) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	@PutMapping(path = "admin/updateMitarbeiterSkill/{username}")
+	public ResponseEntity<String> updateUserSkill(@PathVariable String username, @RequestBody List<String> skills) {
+		mitarbeiterService.addSkillsToUser(username, skills);
+		return new ResponseEntity<String>("the skills of user: " + username + " updated!", HttpStatus.OK);
 	}
 
-	@DeleteMapping(path = "admin/delete/{userID}")
-	public ResponseEntity<String> deleteUser(@PathVariable int userID) {
-		// TODO:
-		return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+	@DeleteMapping(path = "admin/delete/{id}")
+	public ResponseEntity<String> deleteUser(@PathVariable long id) {
+		mitarbeiterService.deleteUser(id);
+		return new ResponseEntity<String>("User with id: " + id + " is deleted successfully ", HttpStatus.OK);
 	}
 }
