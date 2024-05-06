@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import mydigitalprofile.MyDigitalProfileApplication;
 import mydigitalprofile.model.Address;
+import mydigitalprofile.model.CareerLevel;
 import mydigitalprofile.model.KalenderEvent;
 import mydigitalprofile.model.Mitarbeiter;
 import mydigitalprofile.model.Projekt;
@@ -70,7 +71,7 @@ public class ModelsTest {
 		String stringBirthday = "09-02-2000";
 		Date birthday = formatter.parse(stringBirthday);
 		Mitarbeiter mitarbeiter = new Mitarbeiter("pnr-1", "Pob", "Foo", "username", "password", birthday, "Wien",
-				"Dev", Rolle.Mitarbeiter, address1, null, skills, events);
+				CareerLevel.JUNIOR_CONSULTANT, Rolle.Mitarbeiter, address1, null, skills, events);
 
 		kalenderEventRepository.save(event1);
 		skillRepository.save(skill1);
@@ -85,6 +86,7 @@ public class ModelsTest {
 		skillRepository.save(skill2);
 
 		Projekt projekt = new Projekt("Projek-1", "smthn", dateFrom, dataTo, "DESC");
+		projekt = projektRepository.save(projekt);
 		Team team = new Team("Team-1", projekt, new HashSet<Mitarbeiter>());
 		team.addMitarbeiter(mitarbeiter);
 		teamRepository.save(team);
@@ -122,6 +124,8 @@ public class ModelsTest {
 		assertEquals("Team-1", team.getTeamName());
 
 		assertEquals("Projek-1", team.getProjekt().getProjektName());
+
+		mitarbeiterRepository.deleteAll();
 
 	}
 }

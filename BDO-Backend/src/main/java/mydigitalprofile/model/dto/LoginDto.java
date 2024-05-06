@@ -1,14 +1,14 @@
 package mydigitalprofile.model.dto;
 
-public class loginDto {
+public class LoginDto {
 
 	private String username;
 	private String password;
 
 	/**
-	 * 
+	 *
 	 */
-	public loginDto() {
+	public LoginDto() {
 		super();
 	}
 
@@ -16,7 +16,7 @@ public class loginDto {
 	 * @param username
 	 * @param password
 	 */
-	public loginDto(String username, String password) {
+	public LoginDto(String username, String password) {
 		super();
 		this.username = username;
 		this.password = password;
