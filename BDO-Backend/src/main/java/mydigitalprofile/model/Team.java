@@ -21,19 +21,29 @@ public class Team {
 	@Column
 	private String teamName;
 
-	@OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "projekt_id")
 	private Projekt projekt;
 
-	@OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "team", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	private Set<Mitarbeiter> mitarbeiters = new HashSet<>();
 
 	/**
-	 * 
+	 *
 	 */
 	public Team() {
 		super();
 	}
+
+
+	/**
+	 * @param teamName
+	 */
+	public Team(String teamName) {
+		super();
+		this.teamName = teamName;
+	}
+
 
 	/**
 	 * @param teamName
@@ -47,13 +57,17 @@ public class Team {
 		this.mitarbeiters = mitarbeiters;
 	}
 
-	
+
 	public void addMitarbeiter(Mitarbeiter mitarbeiter) {
 		mitarbeiters.add(mitarbeiter);
 		mitarbeiter.setTeam(this);
 	}
-	
-	
+
+	public void removeMitarbeiter(Mitarbeiter mitarbeiter) {
+		mitarbeiters.remove(mitarbeiter);
+		mitarbeiter.setTeam(null);
+	}
+
 	/**
 	 * @return the teamID
 	 */

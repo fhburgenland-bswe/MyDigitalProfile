@@ -7,5 +7,7 @@ import mydigitalprofile.model.Team;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
+    public Team findByTeamName(String teamName);
+
 
 }
