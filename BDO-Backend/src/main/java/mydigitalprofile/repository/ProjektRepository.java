@@ -5,7 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import mydigitalprofile.model.Projekt;
 
+
 @Repository
 public interface ProjektRepository extends JpaRepository<Projekt, Long> {
 
+    public Projekt findByProjektName(String projektName);
 }

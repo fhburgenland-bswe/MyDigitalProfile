@@ -34,7 +34,7 @@ public class Projekt {
 	private Team team;
 
 	/**
-	 * 
+	 *
 	 */
 	public Projekt() {
 		super();
@@ -48,7 +48,7 @@ public class Projekt {
 	 * @param beschreibung
 	 */
 	public Projekt(String projektName, String volumina, Date startDate, Date endDate,
-			String beschreibung) {
+				   String beschreibung) {
 		super();
 		this.projektName = projektName;
 		this.volumina = volumina;
@@ -57,6 +57,11 @@ public class Projekt {
 		this.beschreibung = beschreibung;
 	}
 
+
+	public void removeTeam() {
+		getTeam().setProjekt(null);
+		setTeam(null);
+	}
 	/**
 	 * @return the projektID
 	 */
