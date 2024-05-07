@@ -1,7 +1,6 @@
 package mydigitalprofile.model.dto;
 
 
-
 public class ProjektDto {
 
 	private String projektName;
@@ -31,6 +30,20 @@ public class ProjektDto {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.beschreibung = beschreibung;
+	}
+
+
+
+	/**
+	 * @param volumina
+	 * @param startDate
+	 * @param endDate
+	 */
+	public ProjektDto(String volumina, String startDate, String endDate) {
+		super();
+		this.volumina = volumina;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	/**
