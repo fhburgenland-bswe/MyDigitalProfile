@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -156,6 +157,11 @@ public class MitarbeiterControllerTest {
         List<Skill> skills = skillRepository.findAll();
         assertTrue(skills.isEmpty());
 
+    }
+    @AfterEach
+    public void cleanUp() {
+        mitarbeiterRepository.deleteAll();
+        skillRepository.deleteAll();
     }
 
 

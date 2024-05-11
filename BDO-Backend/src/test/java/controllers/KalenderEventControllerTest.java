@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -108,5 +110,10 @@ public class KalenderEventControllerTest {
         Optional<Mitarbeiter> optionalUser = mitarbeiterRepository.findById(userId);
         assertTrue(optionalUser.isPresent());
         assertTrue(optionalUser.get().getKalenderEvents().size() == 0);
+    }
+    @AfterEach
+    public void cleanUp() {
+        kalenderEventRepository.deleteAll();
+        mitarbeiterRepository.deleteAll();
     }
 }
