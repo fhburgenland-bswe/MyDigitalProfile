@@ -5,7 +5,7 @@ import mydigitalprofile.model.Rolle;
 public class MitarbeiterRolleDto {
 
 	private String username;
-	private Rolle rolle = Rolle.Mitarbeiter;
+	private Rolle rolle = Rolle.ROLE_USER;
 
 	/**
 	 * 

@@ -46,7 +46,7 @@ public class Mitarbeiter {
 	private CareerLevel karriereLevel = CareerLevel.UNBEKANNT;
 
 	@Enumerated(EnumType.STRING)
-	private Rolle rolle = Rolle.Mitarbeiter;
+	private Rolle rolle = Rolle.ROLE_USER;
 
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
 	@JoinColumn(name = "address_id")
