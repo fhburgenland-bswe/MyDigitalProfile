@@ -52,9 +52,9 @@ public class ProjektControllerTest {
     public long setUp(String username1, String username2, String pnr1, String pnr2, String teamName) {
         Set<Long> ids = new HashSet<Long>();
         MitarbeiterDto dto1 = new MitarbeiterDto(pnr1, "Jack", "Mustermann", username1, "password", "11.11.2011",
-                "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR_CONSULTANT);
+                "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.SENIOR_CONSULTANT);
         MitarbeiterDto dto2 = new MitarbeiterDto(pnr2, "Jack", "Mustermann", username2, "password1", "11.11.2001",
-                "TestStr", "1/2", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR_CONSULTANT);
+                "TestStr", "1/2", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.JUNIOR_CONSULTANT);
         ResponseEntity<Long> response1 = controllerM.createMitarbeiter(dto1);
         assertEquals(HttpStatus.OK, response1.getStatusCode());
         assertEquals(200, response1.getStatusCodeValue());

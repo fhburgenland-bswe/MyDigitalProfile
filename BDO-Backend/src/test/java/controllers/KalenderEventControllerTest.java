@@ -45,7 +45,7 @@ public class KalenderEventControllerTest {
 
     private long setUp(String username1, String pnr1) {
         MitarbeiterDto dto1 = new MitarbeiterDto(pnr1, "David", "Kalendermann", username1, "passwort", "11.11.2012",
-                "Testgasse", "1/5", "1070", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR_CONSULTANT);
+                "Testgasse", "1/5", "1070", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.SENIOR_CONSULTANT);
 
         ResponseEntity<Long> response1 = controllerM.createMitarbeiter(dto1);
         assertEquals(HttpStatus.OK, response1.getStatusCode());

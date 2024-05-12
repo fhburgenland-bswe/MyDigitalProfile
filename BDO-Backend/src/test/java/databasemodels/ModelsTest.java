@@ -73,7 +73,7 @@ public class ModelsTest {
 		String stringBirthday = "09-02-2000";
 		Date birthday = formatter.parse(stringBirthday);
 		Mitarbeiter mitarbeiter = new Mitarbeiter("pnr-1", "Pob", "Foo", "username", "password", birthday, "Wien",
-				CareerLevel.JUNIOR_CONSULTANT, Rolle.Mitarbeiter, address1, null, skills, events);
+				CareerLevel.JUNIOR_CONSULTANT, Rolle.ROLE_USER, address1, null, skills, events);
 
 		kalenderEventRepository.save(event1);
 		skillRepository.save(skill1);
