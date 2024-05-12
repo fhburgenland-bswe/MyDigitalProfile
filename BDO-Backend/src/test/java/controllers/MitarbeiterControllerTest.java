@@ -45,7 +45,7 @@ public class MitarbeiterControllerTest {
     @Test
     public void registerAndGetUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack1", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.SENIOR_MANAGER);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.SENIOR_MANAGER);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -63,7 +63,7 @@ public class MitarbeiterControllerTest {
     @Test
     public void getAllUsersTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-2", "Jack", "Mustermann", "jack2", "password",
-                "11.01.2011", "TestStr", "2/1", "1040", "Wien", "Wien", Rolle.Admin, CareerLevel.DIRECTOR);
+                "11.01.2011", "TestStr", "2/1", "1040", "Wien", "Wien", Rolle.ROLE_ADMIN, CareerLevel.DIRECTOR);
         controller.createMitarbeiter(mitarbeiterDto);
 
         ResponseEntity<List<MitarbeiterDto>> response = controller.getUsers();
@@ -77,14 +77,14 @@ public class MitarbeiterControllerTest {
     @Test
     public void updateUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack3", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.MANAGER);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.MANAGER);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(200, response.getStatusCodeValue());
 
         MitarbeiterDto dto = new MitarbeiterDto("PNR-1", "Jack", "Mustermann", "jack3", "password",
-                "11.11.2011", "newTestStrasse", "1/1", "1050", "Wien", "Wien", Rolle.TeamLeiter, CareerLevel.MANAGER);
+                "11.11.2011", "newTestStrasse", "1/1", "1050", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.MANAGER);
 
         ResponseEntity<String> response2 = controller.updateUser("jack3", dto);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
@@ -99,7 +99,7 @@ public class MitarbeiterControllerTest {
 
     @Test
     public void updateNonExistedUserAsAdminTest() {
-        MitarbeiterRolleDto rolleDto = new MitarbeiterRolleDto("username12", Rolle.TeamLeiter);
+        MitarbeiterRolleDto rolleDto = new MitarbeiterRolleDto("username12", Rolle.ROLE_USER);
         assertThrows(ResponseStatusException.class, ()-> controller.updateUserRole(rolleDto), "User is not available!");
     }
 
@@ -108,13 +108,13 @@ public class MitarbeiterControllerTest {
     public void updateUserAsAdminTest() {
 
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-5", "Jack", "Mustermann", "jack4", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR_CONSULTANT);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.JUNIOR_CONSULTANT);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(200, response.getStatusCodeValue());
 
-        MitarbeiterRolleDto rolleDto = new MitarbeiterRolleDto("jack4", Rolle.TeamLeiter);
+        MitarbeiterRolleDto rolleDto = new MitarbeiterRolleDto("jack4", Rolle.ROLE_USER);
 
         ResponseEntity<String> response2 = controller.updateUserRole(rolleDto);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
@@ -122,14 +122,14 @@ public class MitarbeiterControllerTest {
 
         Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername("jack4");
         assertTrue(mitarbeiter != null);
-        assertEquals(Rolle.TeamLeiter, mitarbeiter.getRolle());
+        assertEquals(Rolle.ROLE_USER, mitarbeiter.getRolle());
 
     }
 
     @Test
     public void addSkillsAndDeleteUserTest() {
         MitarbeiterDto mitarbeiterDto = new MitarbeiterDto("PNR-5", "Jack", "Mustermann", "jack5", "password",
-                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.Mitarbeiter, CareerLevel.JUNIOR_CONSULTANT);
+                "11.11.2011", "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.JUNIOR_CONSULTANT);
 
         ResponseEntity<Long> response = controller.createMitarbeiter(mitarbeiterDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());

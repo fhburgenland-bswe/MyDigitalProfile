@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         final CorsConfiguration configurationForCors = new CorsConfiguration();
 
         configurationForCors.applyPermitDefaultValues();
-        configurationForCors.setAllowedOrigins(List.of("http://localhost:8080/", "http://localhost:5432/"));
+        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/"));
         configurationForCors.setAllowedHeaders(List.of("*"));
         configurationForCors.setExposedHeaders(List.of("*"));
         configurationForCors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
@@ -88,11 +88,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
         http.authorizeRequests()
                 .antMatchers("/api/admin/**")
-                .access("hasRole('Admin')");
+                .access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests()
                 .antMatchers("/api/user/**")
-                .access("hasRole('Mitarbeiter')");
+                .access("hasRole('ROLE_USER')");
 
         http.authorizeRequests()
                 .antMatchers("/api/**")
