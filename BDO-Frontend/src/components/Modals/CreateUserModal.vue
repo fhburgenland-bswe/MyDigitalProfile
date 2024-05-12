@@ -1,6 +1,8 @@
 <script setup>
 import { ref, defineEmits } from 'vue';
 import { createUser } from '@/services/user.service';
+import { toast } from "vue3-toastify";
+
 
 const emits = defineEmits(['close']);
 const { isVisible, close } = defineProps({
@@ -85,7 +87,14 @@ function submitNewUser() {
   const isValid = Object.keys(newUser.value).every(key => validateField(key, newUser.value[key]));
   if (isValid) {
     createUser(newUser.value).then(() => {
-      alert("Benutzer wurde erfolgreich angelegt");
+
+      toast("Benutzer wurde erfolgreich angelegt", {
+        "theme": "colored",
+        "type": "success",
+        "position": "bottom-center",
+        "autoClose": 2000,
+        "dangerouslyHTMLString": true,
+      })
       closeModal();
     }).catch(error => {
       alert(error.message);
