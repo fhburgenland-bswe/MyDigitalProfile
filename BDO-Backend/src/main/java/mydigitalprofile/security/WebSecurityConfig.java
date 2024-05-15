@@ -72,7 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         final CorsConfiguration configurationForCors = new CorsConfiguration();
 
         configurationForCors.applyPermitDefaultValues();
-        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/"));
+        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/, ", "http://localhost:5173/"));
         configurationForCors.setAllowedHeaders(List.of("*"));
         configurationForCors.setExposedHeaders(List.of("*"));
         configurationForCors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
