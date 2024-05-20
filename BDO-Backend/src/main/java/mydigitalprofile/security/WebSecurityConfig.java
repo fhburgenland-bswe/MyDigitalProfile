@@ -29,6 +29,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final CustomUserDetailsService customUserDetailsService;
 
+    private static final String[] AUTH_WHITELIST = {
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
+
     public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -84,6 +93,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
         http.authorizeRequests()
                 .antMatchers("/h2-console/**")
+                .permitAll();
+
+        http.authorizeRequests()
+                .antMatchers(AUTH_WHITELIST)
                 .permitAll();
 
         http.authorizeRequests()
@@ -143,7 +156,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("Admin > TeamLeiter > Mitarbeiter");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
         return roleHierarchy;
     }
 }
