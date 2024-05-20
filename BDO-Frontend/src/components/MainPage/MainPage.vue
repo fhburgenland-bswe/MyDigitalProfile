@@ -6,7 +6,6 @@ import { useRouter } from 'vue-router';
 import { toast } from "vue3-toastify";
 import CreateUserModal from '@/components/Modals/CreateUserModal.vue';
 
-
 const isMenuOpen = ref(false);
 const isModalVisible = ref(false);
 const editableField = ref('');
@@ -42,22 +41,24 @@ function closeCreateUserModal() {
 }
 
 const userData = ref<any>(null);
-
 const error = ref(null);
 
 onMounted(async () => {
   const userId = localStorage.getItem('userId');
-  if (!userId) {
+  const username = localStorage.getItem('username');
+
+  if (!userId || !username) {
     handleLogout();
-  } else {
-    try {
-      const data = await getUserData();
-      userData.value = data;
-    } catch (err) {
-      console.error('Error fetching user data:', err);
-      error.value = 'Error fetching user data: ' + err.message;
-      console.log('Error set in data:', error.value);
-    }
+    return;
+  }
+
+  try {
+    const data = await getUserData();
+    userData.value = data;
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+    error.value = 'Error fetching user data: ' + err.message;
+    console.log('Error set in data:', error.value);
   }
 });
 
@@ -66,163 +67,130 @@ async function handleUpdate({ field, value }) {
     await updateUserData(userData.value.id, { [field]: value });
     userData.value[field] = value;
     toast("Daten erfolgreich geändert", {
-      "theme": "colored",
-      "type": "success",
-      "position": "bottom-center",
-      "autoClose": 2000,
-      "dangerouslyHTMLString": true,
-    })
+      theme: "colored",
+      type: "success",
+      position: "bottom-center",
+      autoClose: 2000,
+      dangerouslyHTMLString: true,
+    });
     console.log('Data updated successfully');
   } catch (error) {
     console.error('Error updating user data:', error);
   }
   isModalVisible.value = false;
 }
-
-
 </script>
 
 <template>
-
   <header>
-      <nav>
-        <div class="mobile-navbar">
-          <button :class="{ collapsed: !isMenuOpen }" @click="toggleMenu" class="hamburger-menu" aria-label="Toggle navigation">
-            <span class="toggler-icon top-bar"></span>
-            <span class="toggler-icon middle-bar"></span>
-            <span class="toggler-icon bottom-bar"></span>
-          </button>
-          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
-          <div class="navbar-avatar">
-            <img id="personapicture"
-                 src="@/assets/personaavatar.svg"
-                 alt="Avatar Picture"
-                 srcset="">
-          </div>
+    <nav>
+      <div class="mobile-navbar">
+        <button :class="{ collapsed: !isMenuOpen }" @click="toggleMenu" class="hamburger-menu" aria-label="Toggle navigation">
+          <span class="toggler-icon top-bar"></span>
+          <span class="toggler-icon middle-bar"></span>
+          <span class="toggler-icon bottom-bar"></span>
+        </button>
+        <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+        <div class="navbar-avatar">
+          <img id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture" srcset="">
         </div>
+      </div>
 
-
-        <ul class="mobile-menu" v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
-          <div class="btn">
-            <i class="fas fa-times close-btn"></i>
-          </div>
-          <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
-          <li  @click="handleLogout">Logout</li>
-        </ul>
-
-        <div class="desktop-navbar">
-          <div style="cursor: pointer; position: relative;">
-            <img @click="toggleAvatarMenu" id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture">
-            <ul v-if="avatarMenuOpen" class="avatar-dropdown-menu">
-              <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
-              <li  @click="handleLogout">Logout</li>
-            </ul>
-          </div>
-          <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+      <ul class="mobile-menu" v-show="isMenuOpen" style="position: absolute; background-color: #fff; width: 100%;">
+        <div class="btn">
+          <i class="fas fa-times close-btn"></i>
         </div>
+        <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
+        <li @click="handleLogout">Logout</li>
+      </ul>
 
-
-
-        <div class="logo">
-          <img src="@/assets/bdologo.png" alt="" />
+      <div class="desktop-navbar">
+        <div style="cursor: pointer; position: relative;">
+          <img @click="toggleAvatarMenu" id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture">
+          <ul v-if="avatarMenuOpen" class="avatar-dropdown-menu">
+            <li @click="showCreateUserModal">Neuen Benutzer anlegen</li>
+            <li @click="handleLogout">Logout</li>
+          </ul>
         </div>
+        <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+      </div>
 
-        <div class="emptydiv">
-
-        </div>
-      </nav>
-
+      <div class="logo">
+        <img src="@/assets/bdologo.png" alt="" />
+      </div>
+    </nav>
   </header>
-    <main>
-
-      <div v-if="error">{{ error }}</div>
-      <div v-if="userData" class="container">
+  <main>
+    <div v-if="error">{{ error }}</div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Personalnummer</div>
       <div class="grid-item">{{ userData.personalnummer }}</div>
       <div class="grid-item"></div>
-      </div>
-      <div v-else>Loading...</div>
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-else>Loading...</div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Vorname</div>
       <div class="grid-item">{{ userData.vorname }}</div>
       <div class="grid-item"></div>
-      </div>
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Nachname</div>
       <div class="grid-item">{{ userData.nachname }}</div>
       <div class="grid-item"></div>
-      </div>
-
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Geburtsdatum</div>
       <div class="grid-item">{{ userData.geburtsdatum }}</div>
       <div class="grid-item"></div>
+    </div>
+    <div v-if="userData" class="container">
+      <div class="grid-item">Standort</div>
+      <div class="grid-item">{{ userData.standort }}</div>
+      <div class="grid-item ">
+        <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('standort')" class="editable-icon">
       </div>
-
-      <div v-if="userData" class="container">
-        <div class="grid-item">Standort</div>
-        <div class="grid-item">{{ userData.standort }}</div>
-        <div class="grid-item ">
-          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('standort')" class="editable-icon">
-        </div>
-      </div>
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">PLZ</div>
       <div class="grid-item">{{ userData.plz }}</div>
-        <div class="grid-item">
-          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('plz')" class="editable-icon">
-        </div>
+      <div class="grid-item">
+        <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('plz')" class="editable-icon">
       </div>
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Ort</div>
       <div class="grid-item">{{ userData.ort }}</div>
-        <div class="grid-item">
-          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('ort')" class="editable-icon">
-        </div>
-        </div>
-
-      <div v-if="userData" class="container">
+      <div class="grid-item">
+        <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('ort')" class="editable-icon">
+      </div>
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Straße</div>
       <div class="grid-item">{{ userData.strasse }}</div>
-        <div class="grid-item">
-          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('strasse')" class="editable-icon">
-        </div>
+      <div class="grid-item">
+        <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('strasse')" class="editable-icon">
       </div>
-
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Hausnummer</div>
       <div class="grid-item">{{ userData.hausnummer }}</div>
-        <div class="grid-item">
-          <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('hausnummer')" class="editable-icon">
-        </div>
+      <div class="grid-item">
+        <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('hausnummer')" class="editable-icon">
       </div>
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Skills</div>
       <div class="grid-item">{{ userData.skills }}</div>
       <div class="grid-item"></div>
-      </div>
-
-
-      <div v-if="userData" class="container">
+    </div>
+    <div v-if="userData" class="container">
       <div class="grid-item">Karrierelevel</div>
       <div class="grid-item">{{ userData.karrierelevel }}</div>
       <div class="grid-item"></div>
-      </div>
-
-
-    </main>
-
-
+    </div>
+  </main>
   <ModalComponent :field="editableField" :isVisible="isModalVisible" @update="handleUpdate" @close="isModalVisible = false" />
   <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
-
 </template>
 
 <style scoped>
