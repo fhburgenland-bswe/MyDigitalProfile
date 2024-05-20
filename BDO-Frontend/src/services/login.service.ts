@@ -1,34 +1,34 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001';// URL of the JSON Server. start the server with "json-server --watch db.json --port 3001"
-
+const BASE_URL = 'http://localhost:8080'; // URL of the Spring Boot Backend
 
 export const login = async (email: string, password: string): Promise<{
     success: boolean;
     message: string;
-    userId: any
+    userId: any;
+    username: string;
 }> => {
     try {
-        const response = await axios.get(`${BASE_URL}/users?email=${email}`);
+        const response = await axios.post(`${BASE_URL}/login`, { username: email, password }, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
 
+        console.log('Response from backend:', response);
 
-        if (Array.isArray(response.data) && response.data.length > 0) {
-            const user = response.data[0];
-
-            if (user.password === password) {
-                return { success: true, message: "Login successful", userId: user.id };
-
-            } else {
-                return { success: false, message: "Login failed", userId: null};
-            }
+        if (response.status === 200) {
+            // Mocking userId and username for the sake of this example
+            const userId = 1; // Replace this with actual logic to obtain userId
+            const username = email; // Assuming username is the email used for login
+            return { success: true, message: "Login successful", userId: userId, username: username };
         } else {
-            return { success: false, message: "Login failed", userId: null};
+            console.error('Login failed: Invalid response status');
+            return { success: false, message: "Login failed", userId: null, username: '' };
         }
     } catch (error) {
         console.error('Error during login:', error);
-        throw error;
+        return { success: false, message: "Login failed", userId: null, username: '' };
     }
 };
-
-
-
