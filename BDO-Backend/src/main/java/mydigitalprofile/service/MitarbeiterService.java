@@ -65,9 +65,9 @@ public class MitarbeiterService {
 
     }
 
-    public MitarbeiterDto findUserByIdAndUsername(String username, long id) {
+    public MitarbeiterDto findUserByUsername(String username) {
 
-        MitarbeiterDto mitarbeiter = mitarbeiterRepository.findByIdAndUsername(username, id);
+        MitarbeiterDto mitarbeiter = mitarbeiterRepository.findDtoByUsername(username);
 
         if (mitarbeiter != null) {
             return mitarbeiter;

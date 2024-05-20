@@ -51,7 +51,7 @@ public class MitarbeiterControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(200, response.getStatusCodeValue());
 
-        ResponseEntity<MitarbeiterDto> response2 = controller.getUser(mitarbeiterDto.getUsername(), response.getBody().longValue());
+        ResponseEntity<MitarbeiterDto> response2 = controller.getUser(mitarbeiterDto.getUsername());
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         MitarbeiterDto mitarbeiterDto2 = response2.getBody();
         assertEquals(mitarbeiterDto.getPnr(), mitarbeiterDto2.getPnr());
