@@ -42,4 +42,5 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
             + "JOIN m.address a")
     public List<MitarbeiterDto> findAllMitarbeiter();
 
+
 }

@@ -42,37 +42,33 @@ public class MitarbeiterController {
 	}
 
 	@ApiOperation(value = "Returns a user DTO by its username, this end-point could be used after a successful login.")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Returns the User data."),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Returns the User data."),
 			@ApiResponse(code = 400, message = "In case the username is missing in the request."),
 			@ApiResponse(code = 401, message = "If the user is not authenticated."),
 			@ApiResponse(code = 404, message = "In case the username is not found in the database."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@GetMapping(path = "user/{username}/user")
-	public ResponseEntity<MitarbeiterDto> getUser(@ApiParam(name = "Username", required = true) @PathVariable String username) {
+	public ResponseEntity<MitarbeiterDto> getUser(
+			@ApiParam(name = "Username", required = true) @PathVariable String username) {
 		MitarbeiterDto mitarbeiterDto = mitarbeiterService.findUserByUsername(username);
 		return new ResponseEntity<>(mitarbeiterDto, HttpStatus.OK);
 	}
 
 	@ApiOperation(value = "Returns all users")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "Returns a list of all users."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Returns a list of all users."),
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@GetMapping(path = "admin/all")
 	public ResponseEntity<List<MitarbeiterDto>> getUsers() {
 		List<MitarbeiterDto> list = mitarbeiterService.getAllUsers();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 
+
 	@ApiOperation(value = "Updates a user's information")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "User updated successfully."),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "User updated successfully."),
 			@ApiResponse(code = 400, message = "In case the username is missing in the request."),
 			@ApiResponse(code = 404, message = "In case the username is not found in the database."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@PutMapping(path = "user/{username}")
 	public ResponseEntity<String> updateUser(@PathVariable String username, @RequestBody MitarbeiterDto userDto) {
 		mitarbeiterService.updateUser(username, userDto);
@@ -80,12 +76,10 @@ public class MitarbeiterController {
 	}
 
 	@ApiOperation(value = "Updates a user's role")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "User's role updated successfully."),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "User's role updated successfully."),
 			@ApiResponse(code = 400, message = "In case the username is missing in the request."),
 			@ApiResponse(code = 404, message = "In case the username is not found in the database."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@PutMapping(path = "admin/updateMitarbeiterRolle")
 	public ResponseEntity<String> updateUserRole(@RequestBody MitarbeiterRolleDto request) {
 		mitarbeiterService.updateUserRole(request);
@@ -93,12 +87,10 @@ public class MitarbeiterController {
 	}
 
 	@ApiOperation(value = "Updates a user's skills")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "User's skills updated successfully."),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "User's skills updated successfully."),
 			@ApiResponse(code = 400, message = "In case the username is missing in the request."),
 			@ApiResponse(code = 404, message = "In case the username is not found in the database."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@PutMapping(path = "admin/updateMitarbeiterSkill/{username}")
 	public ResponseEntity<String> updateUserSkill(@PathVariable String username, @RequestBody List<String> skills) {
 		mitarbeiterService.addSkillsToUser(username, skills);
@@ -106,12 +98,10 @@ public class MitarbeiterController {
 	}
 
 	@ApiOperation(value = "Deletes a user by ID")
-	@ApiResponses(value = {
-			@ApiResponse(code = 200, message = "User deleted successfully."),
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "User deleted successfully."),
 			@ApiResponse(code = 400, message = "In case the ID is missing in the request."),
 			@ApiResponse(code = 404, message = "In case the ID is not found in the database."),
-			@ApiResponse(code = 500, message = "In case of an internal server error.")
-	})
+			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@DeleteMapping(path = "admin/delete/{id}")
 	public ResponseEntity<String> deleteUser(@PathVariable long id) {
 		mitarbeiterService.deleteUser(id);
