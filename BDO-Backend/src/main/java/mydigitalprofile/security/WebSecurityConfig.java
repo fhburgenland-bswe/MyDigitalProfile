@@ -104,6 +104,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
                 .access("hasRole('ROLE_ADMIN')");
 
         http.authorizeRequests()
+                .antMatchers("/api/teamleader/**")
+                .access("hasRole('ROLE_TEAMLEADER')");
+
+        http.authorizeRequests()
                 .antMatchers("/api/user/**")
                 .access("hasRole('ROLE_USER')");
 
@@ -156,7 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_TEAMLEADER > ROLE_USER");
         return roleHierarchy;
     }
 }

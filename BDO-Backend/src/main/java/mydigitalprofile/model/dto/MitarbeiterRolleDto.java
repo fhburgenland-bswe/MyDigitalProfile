@@ -8,7 +8,7 @@ public class MitarbeiterRolleDto {
 	private Rolle rolle = Rolle.ROLE_USER;
 
 	/**
-	 * 
+	 *
 	 */
 	public MitarbeiterRolleDto() {
 		super();

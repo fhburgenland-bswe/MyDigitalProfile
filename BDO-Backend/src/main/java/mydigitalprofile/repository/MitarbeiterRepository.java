@@ -2,7 +2,6 @@ package mydigitalprofile.repository;
 
 import java.util.List;
 
-import mydigitalprofile.model.dto.MitarbeiterSkillDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -43,6 +42,5 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
             + "JOIN m.address a")
     public List<MitarbeiterDto> findAllMitarbeiter();
 
-    public MitarbeiterSkillDto findByUsernameWithSkills(String username);
 
 }

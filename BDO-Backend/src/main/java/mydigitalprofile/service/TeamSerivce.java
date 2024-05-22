@@ -13,8 +13,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import mydigitalprofile.model.Mitarbeiter;
 import mydigitalprofile.model.Team;
+import mydigitalprofile.model.dto.MitarbeiterDto;
 import mydigitalprofile.model.dto.TeamDto;
 import mydigitalprofile.repository.MitarbeiterRepository;
+import mydigitalprofile.repository.SkillRepository;
 import mydigitalprofile.repository.TeamRepository;
 
 @Service
@@ -25,6 +27,9 @@ public class TeamSerivce {
 
     @Autowired
     private MitarbeiterRepository mitarbeiterRepository;
+
+    @Autowired
+    private SkillRepository skillRepository;
 
     public Long createNewTeam(TeamDto dto) {
         Team team = teamRepository.findByTeamName(dto.getTeamName());
@@ -68,6 +73,25 @@ public class TeamSerivce {
         }
 
         return teamDtos;
+    }
+
+
+    public List<MitarbeiterDto> getTeamMembersByUsername(String username) {
+        List<MitarbeiterDto> mitarbeiters = new ArrayList<MitarbeiterDto>();
+        Long teamId = teamRepository.findTeamIdByUsername(username);
+        if (teamId != null) {
+            mitarbeiters = teamRepository.findAllMitarbeiterByTeamId(teamId);
+        }
+        if (mitarbeiters.size() > 0) {
+            for (MitarbeiterDto mitarbeiterDto : mitarbeiters) {
+                List<String> skills = skillRepository.findSkillsByUsername(mitarbeiterDto.getUsername());
+                if (!skills.isEmpty()) {
+                    mitarbeiterDto.setSkills(skills);
+                }
+            }
+        }
+
+        return mitarbeiters;
     }
 
     public void addMitarbeiter(long teamId, List<Long> mitarbeiterIds) {
