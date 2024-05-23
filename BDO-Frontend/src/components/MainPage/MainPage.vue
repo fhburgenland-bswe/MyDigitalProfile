@@ -44,10 +44,9 @@ const userData = ref<any>(null);
 const error = ref(null);
 
 onMounted(async () => {
-  const userId = localStorage.getItem('userId');
   const username = localStorage.getItem('username');
 
-  if (!userId || !username) {
+  if (!username) {
     handleLogout();
     return;
   }
@@ -64,7 +63,8 @@ onMounted(async () => {
 
 async function handleUpdate({ field, value }) {
   try {
-    await updateUserData(userData.value.id, { [field]: value });
+    const username = localStorage.getItem('username');
+    await updateUserData(username, { [field]: value });
     userData.value[field] = value;
     toast("Daten erfolgreich geändert", {
       theme: "colored",
@@ -124,7 +124,7 @@ async function handleUpdate({ field, value }) {
     <div v-if="error">{{ error }}</div>
     <div v-if="userData" class="container">
       <div class="grid-item">Personalnummer</div>
-      <div class="grid-item">{{ userData.personalnummer }}</div>
+      <div class="grid-item">{{ userData.pnr }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-else>Loading...</div>
@@ -173,7 +173,7 @@ async function handleUpdate({ field, value }) {
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Hausnummer</div>
-      <div class="grid-item">{{ userData.hausnummer }}</div>
+      <div class="grid-item">{{ userData.hausNr }}</div>
       <div class="grid-item">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('hausnummer')" class="editable-icon">
       </div>
@@ -185,14 +185,13 @@ async function handleUpdate({ field, value }) {
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Karrierelevel</div>
-      <div class="grid-item">{{ userData.karrierelevel }}</div>
+      <div class="grid-item">{{ userData.karriereLevel }}</div>
       <div class="grid-item"></div>
     </div>
   </main>
   <ModalComponent :field="editableField" :isVisible="isModalVisible" @update="handleUpdate" @close="isModalVisible = false" />
   <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
 </template>
-
 <style scoped>
 
 
