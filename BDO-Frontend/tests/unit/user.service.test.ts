@@ -15,9 +15,9 @@ describe('user.service tests', () => {
 
 
     it('logout should remove userId from localStorage', () => {
-        localStorage.setItem('userId', '123');
+        localStorage.setItem('username', 'test@user.de');
         userService.logout();
 
-        expect(localStorage.getItem('userId')).toBeNull();
+        expect(localStorage.getItem('username')).toBeNull();
     });
 });

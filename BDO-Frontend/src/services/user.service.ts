@@ -1,12 +1,19 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001'; // URL of the JSON Server. start the server with "json-server --watch db.json --port 3001"
+const BASE_URL = 'http://localhost:8080'; // URL of the Spring Boot Backend
 
 export const getUserData = async (): Promise<any> => {
-    const userId = localStorage.getItem('userId'); // Get user ID from storage
-    console.log('Attempting to fetch data for user ID:', userId);
+    const username = localStorage.getItem('username');
+    console.log('Attempting to fetch data for username:', username);
+
+    if (!username) {
+        throw new Error('Username is missing');
+    }
+
     try {
-        const response = await axios.get(`${BASE_URL}/users/${userId}`);
+        const response = await axios.get(`${BASE_URL}/api/user/${username}/user`, {
+            withCredentials: true
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching user data:', error);
@@ -14,19 +21,11 @@ export const getUserData = async (): Promise<any> => {
     }
 };
 
-const formatBirthdate = (birthdate: string) => {
-    const [year, month, day] = birthdate.split('-');
-    return `${day}.${month}.${year}`;
-};
-
-const emailExists = async (email: string): Promise<boolean> => {
-    const response = await axios.get(`${BASE_URL}/users?email=${email}`);
-    return response.data.length > 0;
-};
-
-export const updateUserData = async (userId: string, data: any): Promise<any> => {
+export const updateUserData = async (username: string, data: any): Promise<any> => {
     try {
-        const response = await axios.patch(`${BASE_URL}/users/${userId}`, data);
+        const response = await axios.put(`${BASE_URL}/api/user/${username}`, data, {
+            withCredentials: true
+        });
         return response.data;
     } catch (error) {
         console.error('Error updating user data:', error);
@@ -35,14 +34,11 @@ export const updateUserData = async (userId: string, data: any): Promise<any> =>
 };
 
 export const createUser = async (userData: any): Promise<any> => {
-    if (await emailExists(userData.email)) {
-        throw new Error('Email already exists.');
-    }
-
-    userData.geburtsdatum = formatBirthdate(userData.geburtsdatum);
-
+    console.log('Submitting new user:', JSON.stringify(userData));
     try {
-        const response = await axios.post(`${BASE_URL}/users`, userData);
+        const response = await axios.post(`${BASE_URL}/api/register`, userData, {
+            withCredentials: true
+        });
         return response.data;
     } catch (error) {
         console.error('Error creating user:', error);
@@ -51,6 +47,6 @@ export const createUser = async (userData: any): Promise<any> => {
 };
 
 export const logout = (): void => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('username');
     console.log('User logged out and session cleared');
 };

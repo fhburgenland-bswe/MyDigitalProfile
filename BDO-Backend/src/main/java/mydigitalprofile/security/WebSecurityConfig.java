@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         final CorsConfiguration configurationForCors = new CorsConfiguration();
 
         configurationForCors.applyPermitDefaultValues();
-        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/"));
+        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/, ", "http://localhost:5173/"));
         configurationForCors.setAllowedHeaders(List.of("*"));
         configurationForCors.setExposedHeaders(List.of("*"));
         configurationForCors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
@@ -102,6 +102,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests()
                 .antMatchers("/api/admin/**")
                 .access("hasRole('ROLE_ADMIN')");
+
+        http.authorizeRequests()
+                .antMatchers("/api/teamleader/**")
+                .access("hasRole('ROLE_TEAMLEADER')");
 
         http.authorizeRequests()
                 .antMatchers("/api/user/**")
@@ -156,7 +160,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_TEAMLEADER > ROLE_USER");
         return roleHierarchy;
     }
 }

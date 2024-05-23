@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import mydigitalprofile.model.dto.MitarbeiterDto;
 import mydigitalprofile.model.dto.TeamDto;
 import mydigitalprofile.service.TeamSerivce;
 
@@ -45,6 +46,13 @@ public class TeamController {
     public ResponseEntity<List<TeamDto>> getAllTeams() {
         List<TeamDto> teams = teamSerivce.getAllTeams();
         return new ResponseEntity<>(teams, HttpStatus.OK);
+    }
+
+
+    @GetMapping(path = "teamleader/teamMembers/{username}")
+    public ResponseEntity<List<MitarbeiterDto>> getTeamMembers(@PathVariable String username) {
+        List<MitarbeiterDto> list = teamSerivce.getTeamMembersByUsername(username);
+        return new ResponseEntity<List<MitarbeiterDto>>(list, HttpStatus.OK);
     }
 
     @PutMapping(path = "admin/team/addMitarbeiter/{id}")

@@ -68,28 +68,50 @@ public class MitarbeiterService {
     public MitarbeiterDto findUserByUsername(String username) {
 
         MitarbeiterDto mitarbeiter = mitarbeiterRepository.findDtoByUsername(username);
+        List<String> skills = skillRepository.findSkillsByUsername(username);
 
         if (mitarbeiter != null) {
+            if (!skills.isEmpty()) {
+                mitarbeiter.setSkills(skills);
+            }
             return mitarbeiter;
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
     }
 
     public List<MitarbeiterDto> getAllUsers() {
-        return mitarbeiterRepository.findAllMitarbeiter();
+        List<MitarbeiterDto> mitarbeiters = mitarbeiterRepository.findAllMitarbeiter();
+        for (MitarbeiterDto mitarbeiterDto : mitarbeiters) {
+            List<String> skills = skillRepository.findSkillsByUsername(mitarbeiterDto.getUsername());
+            if (!skills.isEmpty()) {
+                mitarbeiterDto.setSkills(skills);
+            }
+        }
+
+        return mitarbeiters;
     }
+
 
 
     public void updateUser(String username, MitarbeiterDto dto) {
         Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(username);
         if (mitarbeiter != null) {
-            mitarbeiter.setVorname(dto.getVorname());
-            mitarbeiter.setNachname(dto.getNachname());
             Address address = mitarbeiter.getAddress();
-            address.setStrasse(dto.getStrasse());
-            address.setHausNr(dto.getHausNr());
-            address.setPlz(dto.getPlz());
-            address.setOrt(dto.getOrt());
+            if (dto.getStrasse() != null && !dto.getStrasse().isEmpty()) {
+                address.setStrasse(dto.getStrasse());
+            }
+            if (dto.getPlz() != null && !dto.getPlz().isEmpty()) {
+                address.setPlz(dto.getPlz());
+            }
+            if (dto.getHausNr() != null && !dto.getHausNr().isEmpty()) {
+                address.setHausNr(dto.getHausNr());
+            }
+            if (dto.getOrt() != null && !dto.getOrt().isEmpty()) {
+                address.setOrt(dto.getOrt());
+            }
+            if (dto.getStandort() != null && !dto.getStandort().isEmpty()) {
+                mitarbeiter.setStandort(dto.getStandort());
+            }
 
             addressRepository.save(address);
             mitarbeiterRepository.save(mitarbeiter);

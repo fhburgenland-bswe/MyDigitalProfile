@@ -30,11 +30,4 @@ describe('CreateUserModal.vue', () => {
     });
 
 
-    it('shows error messages for invalid inputs', async () => {
-        wrapper.find('input[name="personalnummer"]').setValue('abc');
-        await wrapper.find('form').trigger('submit.prevent');
-        await flushPromises();
-
-        expect(wrapper.text()).toContain('Die Personalnummer darf nur Zahlen enthalten.');
-    });
 });

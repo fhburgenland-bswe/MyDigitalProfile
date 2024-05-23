@@ -1,5 +1,8 @@
 package mydigitalprofile.model.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import mydigitalprofile.model.CareerLevel;
 import mydigitalprofile.model.Rolle;
 
@@ -18,6 +21,7 @@ public class MitarbeiterDto {
 	private String standort;
 	private Rolle rolle = Rolle.ROLE_USER;
 	private CareerLevel karriereLevel = CareerLevel.UNBEKANNT;
+	private List<String> skills = new ArrayList<String>();
 
 	/**
 	 *
@@ -60,8 +64,6 @@ public class MitarbeiterDto {
 		this.karriereLevel = karriereLevel;
 	}
 
-
-
 	/**
 	 * @param pnr
 	 * @param vorname
@@ -75,8 +77,8 @@ public class MitarbeiterDto {
 	 * @param rolle
 	 * @param karriereLevel
 	 */
-	public MitarbeiterDto(String pnr, String vorname, String nachname, String username,
-						  String strasse, String hausNr, String plz, String ort, String standort, Rolle rolle, CareerLevel karriereLevel) {
+	public MitarbeiterDto(String pnr, String vorname, String nachname, String username, String strasse, String hausNr,
+						  String plz, String ort, String standort, Rolle rolle, CareerLevel karriereLevel) {
 		super();
 		this.pnr = pnr;
 		this.vorname = vorname;
@@ -89,6 +91,42 @@ public class MitarbeiterDto {
 		this.standort = standort;
 		this.rolle = rolle;
 		this.karriereLevel = karriereLevel;
+	}
+
+	/**
+	 * @param pnr
+	 * @param vorname
+	 * @param nachname
+	 * @param username
+	 * @param passwort
+	 * @param geburtsdatum
+	 * @param strasse
+	 * @param hausNr
+	 * @param plz
+	 * @param ort
+	 * @param standort
+	 * @param rolle
+	 * @param karriereLevel
+	 * @param skills
+	 */
+	public MitarbeiterDto(String pnr, String vorname, String nachname, String username, String passwort,
+						  String geburtsdatum, String strasse, String hausNr, String plz, String ort, String standort, Rolle rolle,
+						  CareerLevel karriereLevel, List<String> skills) {
+		super();
+		this.pnr = pnr;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.username = username;
+		this.passwort = passwort;
+		this.geburtsdatum = geburtsdatum;
+		this.strasse = strasse;
+		this.hausNr = hausNr;
+		this.plz = plz;
+		this.ort = ort;
+		this.standort = standort;
+		this.rolle = rolle;
+		this.karriereLevel = karriereLevel;
+		this.skills = skills;
 	}
 
 	/**
@@ -271,6 +309,20 @@ public class MitarbeiterDto {
 	 */
 	public void setKarriereLevel(CareerLevel karriereLevel) {
 		this.karriereLevel = karriereLevel;
+	}
+
+	/**
+	 * @return the skills
+	 */
+	public List<String> getSkills() {
+		return skills;
+	}
+
+	/**
+	 * @param skills the skills to set
+	 */
+	public void setSkills(List<String> skills) {
+		this.skills = skills;
 	}
 
 }
