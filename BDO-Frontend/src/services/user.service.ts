@@ -47,7 +47,6 @@ export const createUser = async (userData: any): Promise<any> => {
 };
 
 export const logout = (): void => {
-    localStorage.removeItem('userId');
     localStorage.removeItem('username');
     console.log('User logged out and session cleared');
 };
