@@ -13,6 +13,18 @@ const isCreateUserModalVisible = ref(false);
 const avatarMenuOpen = ref(false);
 const router = useRouter();
 
+const karriereLevelMapping = {
+  JUNIOR_CONSULTANT: 'Junior Consultant',
+  CONSULTANT: 'Consultant',
+  SENIOR_CONSULTANT: 'Senior Consultant',
+  MANAGER: 'Manager',
+  SENIOR_MANAGER: 'Senior Manager',
+  DIRECTOR: 'Director',
+  ASSOCIATE_PARTNER: 'Associate Partner',
+  PARTNER: 'Partner',
+  UNBEKANNT: 'Unbekannt'
+};
+
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value;
 }
@@ -190,7 +202,7 @@ async function handleUpdate({ field, value }) {
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Karrierelevel</div>
-      <div class="grid-item">{{ userData.karriereLevel }}</div>
+      <div class="grid-item">{{ karriereLevelMapping[userData.karriereLevel] }}</div>
       <div class="grid-item"></div>
     </div>
   </main>
@@ -198,8 +210,8 @@ async function handleUpdate({ field, value }) {
   <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
 </template>
 
-<style scoped>
 
+<style scoped>
 
 #personapicture:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
