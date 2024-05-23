@@ -3,11 +3,10 @@ import { login } from '@/services/login.service';
 import { useRouter, useRoute } from 'vue-router';
 import { toast } from "vue3-toastify";
 
-
 interface LoginResponse {
   success: boolean;
   message: string;
-  userId?: number;
+  username?: string;
 }
 
 const router = useRouter();
@@ -31,35 +30,27 @@ const handleSubmit = async (event: Event) => {
 
   const response: LoginResponse = await login(email, password);
 
-  if (response.success && response.userId) {
-    console.log("Login successfull");
-    localStorage.setItem('userId', response.userId.toString());  // Save the user ID in the local storage after a successful login
+  if (response.success) {
+    console.log("Login successful");
+    localStorage.setItem('username', email);
     router.push('/Main');
   } else {
     console.log("Login failed");
     toast("E-Mail oder Passwort falsch", {
-      "theme": "colored",
-      "type": "error",
-      "position": "bottom-center",
-      "dangerouslyHTMLString": true,
-    })
+      theme: "colored",
+      type: "error",
+      position: "bottom-center",
+      dangerouslyHTMLString: true,
+    });
   }
 };
-
-
-
 </script>
 
 <template>
-
-
   <div class="login-page-wrapper">
     <div class="LoginContainer">
-
-
       <div id="bdo-logo"><img src="/src/assets/bdologo.png"></div>
       <div class="logintext">In Account einloggen</div>
-
       <form @submit="handleSubmit">
         <label for="email">E-Mail</label>
         <div class="input-box"><input type="email" name="email" placeholder="max.muster@bdo.de" required></div>
@@ -67,8 +58,6 @@ const handleSubmit = async (event: Event) => {
         <div class="input-box"><input type="password" name="password" placeholder="Enter your password" required></div>
         <button type="submit" value="Login">Login</button>
       </form>
-
-
     </div>
   </div>
 </template>
