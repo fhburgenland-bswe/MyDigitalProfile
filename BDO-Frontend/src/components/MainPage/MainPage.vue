@@ -48,9 +48,6 @@ onMounted(async () => {
   const username = localStorage.getItem('username');
 
   if (!userId || !username) {
-  const username = localStorage.getItem('username');
-
-  if (!username) {
     handleLogout();
     return;
   }
@@ -67,8 +64,7 @@ onMounted(async () => {
 
 async function handleUpdate({ field, value }) {
   try {
-    const username = localStorage.getItem('username');
-    await updateUserData(username, { [field]: value });
+    await updateUserData(userData.value.id, { [field]: value });
     userData.value[field] = value;
     toast("Daten erfolgreich geändert", {
       theme: "colored",
@@ -119,16 +115,14 @@ async function handleUpdate({ field, value }) {
         <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
       </div>
 
+      <div class="logo">
+        <img src="@/assets/bdologo.png" alt="" />
+      </div>
 
+      <div class="emptydiv">
 
-        <div class="logo">
-          <img src="@/assets/bdologo.png" alt="" />
-        </div>
-
-        <div class="emptydiv">
-
-        </div>
-      </nav>
+      </div>
+    </nav>
 
   </header>
   <main>
@@ -203,6 +197,7 @@ async function handleUpdate({ field, value }) {
   <ModalComponent :field="editableField" :isVisible="isModalVisible" @update="handleUpdate" @close="isModalVisible = false" />
   <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
 </template>
+
 <style scoped>
 
 
