@@ -3,17 +3,16 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:8080'; // URL of the Spring Boot Backend
 
 export const getUserData = async (): Promise<any> => {
-    const userId = localStorage.getItem('userId');
     const username = localStorage.getItem('username');
-    console.log('Attempting to fetch data for user ID:', userId, 'and username:', username);
+    console.log('Attempting to fetch data for username:', username);
 
-    if (!userId || !username) {
-        throw new Error('User ID or username is missing');
+    if (!username) {
+        throw new Error('Username is missing');
     }
 
     try {
-        const response = await axios.get(`${BASE_URL}/api/user/${username}/user/${userId}`, {
-            withCredentials: true // Add this line to include credentials
+        const response = await axios.get(`${BASE_URL}/api/user/${username}/user`, {
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
@@ -22,11 +21,10 @@ export const getUserData = async (): Promise<any> => {
     }
 };
 
-export const updateUserData = async (userId: string, data: any): Promise<any> => {
+export const updateUserData = async (username: string, data: any): Promise<any> => {
     try {
-        const username = localStorage.getItem('username'); // Get username from storage
         const response = await axios.put(`${BASE_URL}/api/user/${username}`, data, {
-            withCredentials: true // Add this line to include credentials
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
@@ -36,9 +34,10 @@ export const updateUserData = async (userId: string, data: any): Promise<any> =>
 };
 
 export const createUser = async (userData: any): Promise<any> => {
+    console.log('Submitting new user:', JSON.stringify(userData));
     try {
-        const response = await axios.post(`${BASE_URL}/api/users`, userData, {
-            withCredentials: true // Add this line to include credentials
+        const response = await axios.post(`${BASE_URL}/api/register`, userData, {
+            withCredentials: true
         });
         return response.data;
     } catch (error) {
