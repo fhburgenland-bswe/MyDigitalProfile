@@ -14,7 +14,7 @@ const fieldLabels = {
   plz: "PLZ",
   ort: "Ort",
   strasse: "Straße",
-  hausnummer: "Hausnummer"
+  hausNr: "Hausnummer"
 };
 
 const labelText = computed(() => `Neuer Wert für ${fieldLabels[props.field] || 'Feld'}`);
@@ -24,7 +24,7 @@ const regexPatterns = {
   plz: /^\d+$/, // Only numbers
   ort: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
   strasse: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
-  hausnummer: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/ // Numbers, letters, and specific special characters
+  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/ // Numbers, letters, and specific special characters
 };
 
 const errorMessages = {
@@ -32,7 +32,7 @@ const errorMessages = {
   plz: "Die PLZ darf nur Zahlen enthalten.",
   ort: "Der Ort darf nur Buchstaben enthalten.",
   strasse: "Die Straße darf nur Buchstaben enthalten.",
-  hausnummer: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten."
+  hausNr: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten."
 };
 
 const currentPattern = computed(() => regexPatterns[props.field] || /.*/);
@@ -58,10 +58,7 @@ function submitData() {
     errorMessage.value = errorMessages[props.field] || 'Ungültige Eingabe.';
   }
 }
-
-
 </script>
-
 
 <template>
   <div v-if="isVisible" class="modal">
