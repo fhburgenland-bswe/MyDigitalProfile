@@ -6,7 +6,6 @@ import { toast } from "vue3-toastify";
 interface LoginResponse {
   success: boolean;
   message: string;
-  userId?: number;
   username?: string;
 }
 
@@ -33,8 +32,7 @@ const handleSubmit = async (event: Event) => {
 
   if (response.success) {
     console.log("Login successful");
-    localStorage.setItem('userId', response.userId.toString());  // Save the user ID in the local storage after a successful login
-    localStorage.setItem('username', email);  // Save the username in the local storage after a successful login
+    localStorage.setItem('username', email);
     router.push('/Main');
   } else {
     console.log("Login failed");
@@ -46,8 +44,6 @@ const handleSubmit = async (event: Event) => {
     });
   }
 };
-
-
 </script>
 
 <template>
