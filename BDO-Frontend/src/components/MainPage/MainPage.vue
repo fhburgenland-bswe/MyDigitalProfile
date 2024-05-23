@@ -44,6 +44,10 @@ const userData = ref<any>(null);
 const error = ref(null);
 
 onMounted(async () => {
+  const userId = localStorage.getItem('userId');
+  const username = localStorage.getItem('username');
+
+  if (!userId || !username) {
   const username = localStorage.getItem('username');
 
   if (!username) {
@@ -115,10 +119,17 @@ async function handleUpdate({ field, value }) {
         <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
       </div>
 
-      <div class="logo">
-        <img src="@/assets/bdologo.png" alt="" />
-      </div>
-    </nav>
+
+
+        <div class="logo">
+          <img src="@/assets/bdologo.png" alt="" />
+        </div>
+
+        <div class="emptydiv">
+
+        </div>
+      </nav>
+
   </header>
   <main>
     <div v-if="error">{{ error }}</div>
