@@ -23,7 +23,6 @@ const newUser = ref({
 });
 
 const errorMessages = {
-  pnr: "Die Personalnummer darf nur Zahlen enthalten.",
   vorname: "Der Vorname darf nur Buchstaben enthalten.",
   nachname: "Der Nachname darf nur Buchstaben enthalten.",
   geburtsdatum: "Das Geburtsdatum muss im Format TT.MM.JJJJ sein.",
@@ -37,7 +36,6 @@ const errorMessages = {
 const errors = ref({});
 
 const patterns = {
-  pnr: /^\d+$/,
   vorname: /^[a-zA-ZäöüßÄÖÜ]+$/,
   nachname: /^[a-zA-ZäöüßÄÖÜ]+$/,
   standort: /^[a-zA-ZäöüßÄÖÜ\s]+$/,
@@ -84,7 +82,7 @@ function formatDate(dateStr) {
 async function submitNewUser() {
   const isValid = Object.keys(newUser.value).every(key => validateField(key, newUser.value[key]));
   if (isValid) {
-    const userData = { ...newUser.value, geburtsdatum: formatDate(newUser.value.geburtsdatum) };
+    const userData = {...newUser.value, geburtsdatum: formatDate(newUser.value.geburtsdatum)};
     console.log('Submitting new user:', JSON.stringify(userData));
     try {
       const response = await createUser(userData);
@@ -118,8 +116,22 @@ async function submitNewUser() {
   }
 }
 
+const fieldLabels = {
+  pnr: 'Personalnummer',
+  vorname: 'Vorname',
+  nachname: 'Nachname',
+  username: 'E-Mail',
+  passwort: 'Passwort',
+  geburtsdatum: 'Geburtsdatum',
+  strasse: 'Straße',
+  hausNr: 'Hausnummer',
+  plz: 'PLZ',
+  ort: 'Ort',
+  standort: 'Standort'
+};
+
 function formatLabel(field) {
-  return field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1').trim();
+  return fieldLabels[field] || field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1').trim();
 }
 
 function inputType(field) {
@@ -149,10 +161,7 @@ function inputType(field) {
   </div>
 </template>
 
-
-
 <style scoped>
-
 input[type="date"] {
   width: 100%;
   padding: 8px;
@@ -175,9 +184,9 @@ input[type="date"]:focus {
   font-size: 0.8em;
 }
 
-label{
+label {
   display: block;
-  margin: 10px 0
+  margin: 10px 0;
 }
 
 .modal {
@@ -197,7 +206,7 @@ label{
   background-color: #fff;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 500px;
   max-height: 80vh;
@@ -205,10 +214,15 @@ label{
   animation: modalFadeIn 0.3s ease-out;
 }
 
-
 @keyframes modalFadeIn {
-  from { transform: translateY(-50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .close {
@@ -241,8 +255,6 @@ input[type="text"] {
 input[type="text"]:focus {
   border-color: #6200ee;
 }
-
-
 
 .button-group {
   display: flex;
@@ -287,4 +299,3 @@ input[type="email"]:focus, input[type="password"]:focus {
   border-color: #6200ee;
 }
 </style>
-
