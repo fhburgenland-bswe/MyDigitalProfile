@@ -5,7 +5,6 @@ const BASE_URL = 'http://localhost:8080'; // URL of the Spring Boot Backend
 export const login = async (email: string, password: string): Promise<{
     success: boolean;
     message: string;
-    userId: any;
     username: string;
 }> => {
     try {
@@ -19,16 +18,14 @@ export const login = async (email: string, password: string): Promise<{
         console.log('Response from backend:', response);
 
         if (response.status === 200) {
-            // Mocking userId and username for the sake of this example
-            const userId = 1; // Replace this with actual logic to obtain userId
-            const username = email; // Assuming username is the email used for login
-            return { success: true, message: "Login successful", userId: userId, username: username };
+            const username = email;
+            return { success: true, message: "Login successful", username: username };
         } else {
             console.error('Login failed: Invalid response status');
-            return { success: false, message: "Login failed", userId: null, username: '' };
+            return { success: false, message: "Login failed", username: '' };
         }
     } catch (error) {
         console.error('Error during login:', error);
-        return { success: false, message: "Login failed", userId: null, username: '' };
+        return { success: false, message: "Login failed", username: '' };
     }
 };
