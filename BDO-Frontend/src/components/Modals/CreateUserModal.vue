@@ -1,32 +1,29 @@
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, defineEmits, defineProps } from 'vue';
 import { createUser } from '@/services/user.service';
 import { toast } from "vue3-toastify";
 
-
 const emits = defineEmits(['close']);
-const { isVisible, close } = defineProps({
-  isVisible: Boolean,
-  close: Function
+const props = defineProps({
+  isVisible: Boolean
 });
+
 const newUser = ref({
-  email: '',
-  password: '',
-  personalnummer: '',
+  pnr: '',
   vorname: '',
   nachname: '',
+  username: '',
+  passwort: '',
   geburtsdatum: '',
-  standort: '',
+  strasse: '',
+  hausNr: '',
   plz: '',
   ort: '',
-  strasse: '',
-  hausnummer: '',
-  skills: '',
-  karrierelevel: ''
+  standort: ''
 });
 
 const errorMessages = {
-  personalnummer: "Die Personalnummer darf nur Zahlen enthalten.",
+  pnr: "Die Personalnummer darf nur Zahlen enthalten.",
   vorname: "Der Vorname darf nur Buchstaben enthalten.",
   nachname: "Der Nachname darf nur Buchstaben enthalten.",
   geburtsdatum: "Das Geburtsdatum muss im Format TT.MM.JJJJ sein.",
@@ -34,23 +31,19 @@ const errorMessages = {
   plz: "Die PLZ darf nur Zahlen enthalten.",
   ort: "Der Ort darf nur Buchstaben enthalten.",
   strasse: "Die Straße darf nur Buchstaben enthalten.",
-  hausnummer: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten.",
-  skills: "Die Skills dürfen nur Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten.",
-  karrierelevel: "Das Karrierelevel darf nur Buchstaben enthalten."
+  hausNr: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten."
 };
 
 const errors = ref({});
 
 const patterns = {
-  personalnummer: /^\d+$/,
+  pnr: /^\d+$/,
   vorname: /^[a-zA-ZäöüßÄÖÜ]+$/,
   nachname: /^[a-zA-ZäöüßÄÖÜ]+$/,
   standort: /^[a-zA-ZäöüßÄÖÜ\s]+$/,
   plz: /^\d+$/,
   strasse: /^[a-zA-ZäöüßÄÖÜ\s]+$/,
-  hausnummer: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/,
-  skills: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/,
-  karrierelevel: /^[a-zA-ZäöüßÄÖÜ]+$/
+  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/
 };
 
 function validateField(field, value) {
@@ -64,56 +57,74 @@ function validateField(field, value) {
 
 function closeModal() {
   newUser.value = {
-    email: '',
-    password: '',
-    personalnummer: '',
+    pnr: '',
     vorname: '',
     nachname: '',
+    username: '',
+    passwort: '',
     geburtsdatum: '',
-    standort: '',
+    strasse: '',
+    hausNr: '',
     plz: '',
     ort: '',
-    strasse: '',
-    hausnummer: '',
-    skills: '',
-    karrierelevel: ''
+    standort: ''
   };
   errors.value = {};
   emits('close');
 }
 
-
-function submitNewUser() {
-  const isValid = Object.keys(newUser.value).every(key => validateField(key, newUser.value[key]));
-  if (isValid) {
-    createUser(newUser.value).then(() => {
-
-      toast("Benutzer wurde erfolgreich angelegt", {
-        "theme": "colored",
-        "type": "success",
-        "position": "bottom-center",
-        "autoClose": 2000,
-        "dangerouslyHTMLString": true,
-      })
-      closeModal();
-    }).catch(error => {
-      alert(error.message);
-    });
-  } else {
-    alert("Es sind noch Fehler im Formular vorhanden. Bitte überprüfen Sie Ihre Eingaben.");
-  }
+function formatDate(dateStr) {
+  const date = new Date(dateStr);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}.${month}.${year}`;
 }
 
-
-
+async function submitNewUser() {
+  const isValid = Object.keys(newUser.value).every(key => validateField(key, newUser.value[key]));
+  if (isValid) {
+    const userData = { ...newUser.value, geburtsdatum: formatDate(newUser.value.geburtsdatum) };
+    console.log('Submitting new user:', JSON.stringify(userData));
+    try {
+      const response = await createUser(userData);
+      console.log('User created successfully:', response);
+      toast("Benutzer wurde erfolgreich angelegt", {
+        theme: "colored",
+        type: "success",
+        position: "bottom-center",
+        autoClose: 2000,
+        dangerouslyHTMLString: true,
+      });
+      closeModal();
+    } catch (error) {
+      console.error('Error creating user:', error.response || error.message || error);
+      toast("Fehler beim Anlegen des Benutzers: " + (error.response?.data || error.message), {
+        theme: "colored",
+        type: "error",
+        position: "bottom-center",
+        autoClose: 2000,
+        dangerouslyHTMLString: true,
+      });
+    }
+  } else {
+    toast("Es sind noch Fehler im Formular vorhanden. Bitte überprüfen Sie Ihre Eingaben.", {
+      theme: "colored",
+      type: "error",
+      position: "bottom-center",
+      autoClose: 2000,
+      dangerouslyHTMLString: true,
+    });
+  }
+}
 
 function formatLabel(field) {
   return field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1').trim();
 }
 
 function inputType(field) {
-  if (field === 'email') return 'email';
-  if (field === 'password') return 'password';
+  if (field === 'username') return 'email';
+  if (field === 'passwort') return 'password';
   if (field === 'geburtsdatum') return 'date';
   return 'text';
 }
