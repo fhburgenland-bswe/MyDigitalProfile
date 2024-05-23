@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { getUserData, updateUserData, logout } from '@/services/user.service';
+import {onMounted, ref} from 'vue';
+import {getUserData, logout, updateUserData} from '@/services/user.service';
 import ModalComponent from '@/components/Modals/UpdateDataModal.vue';
-import { useRouter } from 'vue-router';
-import { toast } from "vue3-toastify";
+import {useRouter} from 'vue-router';
+import {toast} from "vue3-toastify";
 import CreateUserModal from '@/components/Modals/CreateUserModal.vue';
 
 const isMenuOpen = ref(false);
@@ -64,8 +64,7 @@ onMounted(async () => {
   }
 
   try {
-    const data = await getUserData();
-    userData.value = data;
+    userData.value = await getUserData();
   } catch (err) {
     console.error('Error fetching user data:', err);
     error.value = 'Error fetching user data: ' + err.message;
