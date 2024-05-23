@@ -19,7 +19,8 @@ const newUser = ref({
   hausNr: '',
   plz: '',
   ort: '',
-  standort: ''
+  standort: '',
+  karriereLevel: 'UNBEKANNT' // Default value
 });
 
 const errorMessages = {
@@ -65,7 +66,8 @@ function closeModal() {
     hausNr: '',
     plz: '',
     ort: '',
-    standort: ''
+    standort: '',
+    karriereLevel: 'UNBEKANNT' // Reset to default value
   };
   errors.value = {};
   emits('close');
@@ -127,7 +129,8 @@ const fieldLabels = {
   hausNr: 'Hausnummer',
   plz: 'PLZ',
   ort: 'Ort',
-  standort: 'Standort'
+  standort: 'Standort',
+  karriereLevel: 'Karrierelevel'
 };
 
 function formatLabel(field) {
@@ -140,6 +143,18 @@ function inputType(field) {
   if (field === 'geburtsdatum') return 'date';
   return 'text';
 }
+
+const karriereLevels = [
+  { label: 'Junior Consultant', value: 'JUNIOR_CONSULTANT' },
+  { label: 'Consultant', value: 'CONSULTANT' },
+  { label: 'Senior Consultant', value: 'SENIOR_CONSULTANT' },
+  { label: 'Manager', value: 'MANAGER' },
+  { label: 'Senior Manager', value: 'SENIOR_MANAGER' },
+  { label: 'Director', value: 'DIRECTOR' },
+  { label: 'Associate Partner', value: 'ASSOCIATE_PARTNER' },
+  { label: 'Partner', value: 'PARTNER' },
+  { label: 'Unbekannt', value: 'UNBEKANNT' }
+];
 </script>
 
 <template>
@@ -147,10 +162,16 @@ function inputType(field) {
     <div class="modal-content">
       <h2>Neuen Benutzer anlegen</h2>
       <form @submit.prevent="submitNewUser" class="modal-form">
-        <div class="input-group" v-for="(value, key) in newUser" :key="key">
-          <label :for="key">{{ formatLabel(key) }}</label>
-          <input v-model="newUser[key]" :type="inputType(key)" :id="key" :name="key" required>
+        <div class="input-group" v-for="(value, key) in newUser" :key="key" v-if="key !== 'karriereLevel'">
+          <label :for="key" v-if="key !== 'karriereLevel'">{{ formatLabel(key) }}</label>
+          <input v-model="newUser[key]" :type="inputType(key)" :id="key" :name="key" required v-if="key !== 'karriereLevel'">
           <span v-if="errors[key]" class="error-message">{{ errors[key] }}</span>
+        </div>
+        <div class="input-group">
+          <label for="karriereLevel">{{ formatLabel('karriereLevel') }}</label>
+          <select v-model="newUser.karriereLevel" id="karriereLevel" name="karriereLevel">
+            <option v-for="level in karriereLevels" :key="level.value" :value="level.value">{{ level.label }}</option>
+          </select>
         </div>
         <div class="button-group">
           <button type="button" class="cancel-btn" @click="closeModal">Abbrechen</button>
@@ -162,20 +183,18 @@ function inputType(field) {
 </template>
 
 <style scoped>
-input[type="date"] {
+input[type="date"],
+select {
   width: 100%;
   padding: 8px;
   border: 2px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
   transition: border-color 0.3s;
-  appearance: none;
-  background-position: right 10px center;
-  background-repeat: no-repeat;
-  cursor: pointer;
 }
 
-input[type="date"]:focus {
+input[type="date"]:focus,
+select:focus {
   border-color: #6200ee;
 }
 
