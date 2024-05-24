@@ -18,7 +18,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
 
 
     @Query(value = "SELECT new mydigitalprofile.model.dto.MitarbeiterDto( "
-            + "m.pnr, m.vorname, m.nachname, m.username, "
+            + "m.pnr, m.vorname, m.nachname, m.username, m.geburtsdatum, "
             + "a.strasse, a.hausNr, a.plz, a.ort, m.standort, m.rolle, m.karriereLevel) "
             + "FROM Mitarbeiter m "
             + "JOIN m.address a "
@@ -26,7 +26,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
     public MitarbeiterDto findDtoByUsername(@Param(value = "username") String username);
 
     @Query(value = "SELECT new mydigitalprofile.model.dto.MitarbeiterDto( "
-            + "m.pnr, m.vorname, m.nachname, m.username, "
+            + "m.pnr, m.vorname, m.nachname, m.username, m.geburtsdatum, "
             + "a.strasse, a.hausNr, a.plz, a.ort, m.standort, m.rolle, m.karriereLevel) "
             + "FROM Mitarbeiter m "
             + "JOIN m.address a "
@@ -36,7 +36,7 @@ public interface MitarbeiterRepository extends JpaRepository<Mitarbeiter, Long> 
 
 
     @Query(value = "SELECT new mydigitalprofile.model.dto.MitarbeiterDto( "
-            + "m.pnr, m.vorname, m.nachname, m.username, "
+            + "m.pnr, m.vorname, m.nachname, m.username, m.geburtsdatum, "
             + "a.strasse, a.hausNr, a.plz, a.ort, m.standort, m.rolle, m.karriereLevel) "
             + "FROM Mitarbeiter m "
             + "JOIN m.address a")

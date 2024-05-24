@@ -1,6 +1,9 @@
 package mydigitalprofile.model.dto;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mydigitalprofile.model.CareerLevel;
@@ -28,6 +31,38 @@ public class MitarbeiterDto {
 	 */
 	public MitarbeiterDto() {
 		super();
+	}
+	/**
+	 * @param pnr
+	 * @param vorname
+	 * @param nachname
+	 * @param username
+	 * @param geburtsdatum
+	 * @param strasse
+	 * @param hausNr
+	 * @param plz
+	 * @param ort
+	 * @param standort
+	 * @param rolle
+	 * @param karriereLevel
+	 */
+	public MitarbeiterDto(String pnr, String vorname, String nachname, String username, Date geburtsdatum,
+						  String strasse, String hausNr, String plz, String ort, String standort, Rolle rolle,
+						  CareerLevel karriereLevel) {
+		super();
+		this.pnr = pnr;
+		this.vorname = vorname;
+		this.nachname = nachname;
+		this.username = username;
+		Format formatter = new SimpleDateFormat("dd.MM.yyyy");
+		this.geburtsdatum = formatter.format(geburtsdatum);
+		this.strasse = strasse;
+		this.hausNr = hausNr;
+		this.plz = plz;
+		this.ort = ort;
+		this.standort = standort;
+		this.rolle = rolle;
+		this.karriereLevel = karriereLevel;
 	}
 
 	/**
