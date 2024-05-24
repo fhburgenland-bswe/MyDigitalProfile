@@ -3,7 +3,6 @@ package mydigitalprofile.service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +35,7 @@ public class TeamSerivce {
         if (team != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This team name is not available!");
         }
-        List<Mitarbeiter> mitarbeiters = getMitarbeiterList(dto.getMitarbeiterIds());
+        List<Mitarbeiter> mitarbeiters = getMitarbeiterList(dto.getMitarbeiterUsernames());
         Team newTeam = new Team(dto.getTeamName());
         newTeam = teamRepository.save(newTeam);
         for (Mitarbeiter mitarbeiter : mitarbeiters) {
@@ -46,17 +45,17 @@ public class TeamSerivce {
         return newTeam.getTeamID();
     }
 
-    public TeamDto getTeamById(long id) {
-        Optional<Team> team = teamRepository.findById(id);
-        if (team.isPresent()) {
+    public TeamDto getTeamByTeamName(String teamName) {
+        Team team = teamRepository.findByTeamName(teamName);
+        if (team != null) {
             TeamDto dto = new TeamDto();
-            dto.setTeamName(team.get().getTeamName());
-            for (Mitarbeiter mitarbeiter : team.get().getMitarbeiters()) {
-                dto.getMitarbeiterIds().add(mitarbeiter.getMaId());
+            dto.setTeamName(team.getTeamName());
+            for (Mitarbeiter mitarbeiter : team.getMitarbeiters()) {
+                dto.getMitarbeiterUsernames().add(mitarbeiter.getUsername());
             }
             return dto;
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team with id: " + id + " does not exist!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team: " + teamName + " does not exist!");
         }
     }
 
@@ -67,7 +66,7 @@ public class TeamSerivce {
             TeamDto teamDto = new TeamDto();
             teamDto.setTeamName(team.getTeamName());
             for (Mitarbeiter mitarbeiter : team.getMitarbeiters()) {
-                teamDto.getMitarbeiterIds().add(mitarbeiter.getMaId());
+                teamDto.getMitarbeiterUsernames().add(mitarbeiter.getUsername());
             }
             teamDtos.add(teamDto);
         }
@@ -94,43 +93,40 @@ public class TeamSerivce {
         return mitarbeiters;
     }
 
-    public void addMitarbeiter(long teamId, List<Long> mitarbeiterIds) {
-        Optional<Team> optional = teamRepository.findById(teamId);
-        if (optional.isPresent()) {
-            Team team = optional.get();
-            List<Mitarbeiter> mitarbeiters = getMitarbeiterList(new HashSet<Long>(mitarbeiterIds));
+    public void addMitarbeiter(String teamName, List<String> mitarbeiterUsernames) {
+        Team team = teamRepository.findByTeamName(teamName);
+        if (team != null) {
+            List<Mitarbeiter> mitarbeiters = getMitarbeiterList(new HashSet<String>(mitarbeiterUsernames));
             for (Mitarbeiter mitarbeiter : mitarbeiters) {
                 team.addMitarbeiter(mitarbeiter);
                 mitarbeiterRepository.save(mitarbeiter);
             }
             teamRepository.save(team);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team with id: " + teamId + " does not exist!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team: " + teamName + " does not exist!");
         }
     }
 
-    public void removeMitarbeiterFromTeam(long teamId, List<Long> mitarbeiterIds) {
-        Optional<Team> optional = teamRepository.findById(teamId);
-        if (optional.isPresent()) {
-            Team team = optional.get();
+    public void removeMitarbeiterFromTeam(String teamName, List<String> mitarbeiterUsernames) {
+        Team team = teamRepository.findByTeamName(teamName);
+        if (team != null) {
             List<Mitarbeiter> mitarbeitersToRemove = getMitarbeiterListToRemove(team.getMitarbeiters(),
-                    mitarbeiterIds);
+                    mitarbeiterUsernames);
             for (Mitarbeiter mitarbeiter : mitarbeitersToRemove) {
                 team.removeMitarbeiter(mitarbeiter);
                 mitarbeiterRepository.save(mitarbeiter);
             }
             teamRepository.save(team);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team with id: " + teamId + " does not exist!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team: " + teamName + " does not exist!");
         }
     }
 
 
 
-    public void deleteTeam(long id) {
-        Optional<Team> optional = teamRepository.findById(id);
-        if (optional.isPresent()) {
-            Team team = optional.get();
+    public void deleteTeam(String teamName) {
+        Team team = teamRepository.findByTeamName(teamName);
+        if (team != null) {
             for (Mitarbeiter mitarbeiter : team.getMitarbeiters()) {
                 mitarbeiter.setTeam(null);
                 mitarbeiterRepository.save(mitarbeiter);
@@ -138,29 +134,29 @@ public class TeamSerivce {
             team.getMitarbeiters().clear();
             teamRepository.delete(team);
         } else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team with id: " + id + " does not exist!");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Team: " + teamName + " does not exist!");
         }
     }
 
 
 
-    private List<Mitarbeiter> getMitarbeiterList(Set<Long> mitarbeiterIds) {
+    private List<Mitarbeiter> getMitarbeiterList(Set<String> mitarbeiterUsernames) {
         List<Mitarbeiter> mitarbeiters = new ArrayList<Mitarbeiter>();
-        for (Long id : mitarbeiterIds) {
-            Mitarbeiter mitarbeiter = mitarbeiterRepository.getById(id);
+        for (String username : mitarbeiterUsernames) {
+            Mitarbeiter mitarbeiter = mitarbeiterRepository.findByUsername(username);
             if (mitarbeiter == null) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User with id: " + id + " does not exist!");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User: " + username + " does not exist!");
             }
             mitarbeiters.add(mitarbeiter);
         }
         return mitarbeiters;
     }
 
-    private List<Mitarbeiter> getMitarbeiterListToRemove(Set<Mitarbeiter> mitarbeiters, List<Long> mitarbeiterIds) {
+    private List<Mitarbeiter> getMitarbeiterListToRemove(Set<Mitarbeiter> mitarbeiters, List<String> mitarbeiterUsernames) {
         List<Mitarbeiter> mitarbeitersToRemove = new ArrayList<Mitarbeiter>();
-        for (Long id : mitarbeiterIds) {
+        for (String username : mitarbeiterUsernames) {
             for (Mitarbeiter mitarbeiter : mitarbeiters) {
-                if (mitarbeiter.getMaId().equals(id)) {
+                if (mitarbeiter.getUsername().equals(username)) {
                     mitarbeitersToRemove.add(mitarbeiter);
                     break;
                 }

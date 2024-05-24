@@ -36,9 +36,9 @@ public class TeamController {
         return new ResponseEntity<>(teamId, HttpStatus.OK);
     }
 
-    @GetMapping(path = "user/team/{id}")
-    public ResponseEntity<TeamDto> getTeamById(@PathVariable long id) {
-        TeamDto team = teamSerivce.getTeamById(id);
+    @GetMapping(path = "user/team/{teamName}")
+    public ResponseEntity<TeamDto> getTeamByTeamName(@PathVariable String teamName) {
+        TeamDto team = teamSerivce.getTeamByTeamName(teamName);
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
@@ -55,21 +55,21 @@ public class TeamController {
         return new ResponseEntity<List<MitarbeiterDto>>(list, HttpStatus.OK);
     }
 
-    @PutMapping(path = "admin/team/addMitarbeiter/{id}")
-    public ResponseEntity<String> addMitarbeiter(@PathVariable long id, @RequestBody List<Long> mitarbeiterIds) {
-        teamSerivce.addMitarbeiter(id, mitarbeiterIds);
+    @PutMapping(path = "admin/team/addMitarbeiter/{teamName}")
+    public ResponseEntity<String> addMitarbeiter(@PathVariable String teamName, @RequestBody List<String> mitarbeiterUsernames) {
+        teamSerivce.addMitarbeiter(teamName, mitarbeiterUsernames);
         return new ResponseEntity<String>("Mitarbeiter(s) added!", HttpStatus.OK);
     }
 
-    @PutMapping(path = "admin/team/removeMitarbeiter/{id}")
-    public ResponseEntity<String> removeMitarbeiter(@PathVariable long id, @RequestBody List<Long> mitarbeiterIds) {
-        teamSerivce.removeMitarbeiterFromTeam(id, mitarbeiterIds);
+    @PutMapping(path = "admin/team/removeMitarbeiter/{teamName}")
+    public ResponseEntity<String> removeMitarbeiter(@PathVariable String teamName, @RequestBody List<String> mitarbeiterUsernames) {
+        teamSerivce.removeMitarbeiterFromTeam(teamName, mitarbeiterUsernames);
         return new ResponseEntity<String>("Mitarbeiter(s) removed!", HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "admin/team/delete/{id}")
-    public ResponseEntity<String> deleteTeamById(@PathVariable long id) {
-        teamSerivce.deleteTeam(id);
-        return new ResponseEntity<String>("Team with id: " + id + " deleted!", HttpStatus.OK);
+    @DeleteMapping(path = "admin/team/delete/{teamName}")
+    public ResponseEntity<String> deleteTeamByTeamName(@PathVariable String teamName) {
+        teamSerivce.deleteTeam(teamName);
+        return new ResponseEntity<String>("Team: " + teamName + " deleted!", HttpStatus.OK);
     }
 }

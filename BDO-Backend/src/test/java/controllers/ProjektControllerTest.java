@@ -49,7 +49,7 @@ public class ProjektControllerTest {
     private TeamRepository teamRepository;
 
     public long setUp(String username1, String username2, String pnr1, String pnr2, String teamName) {
-        Set<Long> ids = new HashSet<Long>();
+        Set<String> usernames = new HashSet<>();
         MitarbeiterDto dto1 = new MitarbeiterDto(pnr1, "Jack", "Mustermann", username1, "password", "11.11.2011",
                 "TestStr", "1/1", "1010", "Wien", "Wien", Rolle.ROLE_USER, CareerLevel.SENIOR_CONSULTANT);
         MitarbeiterDto dto2 = new MitarbeiterDto(pnr2, "Jack", "Mustermann", username2, "password1", "11.11.2001",
@@ -60,10 +60,10 @@ public class ProjektControllerTest {
         ResponseEntity<Long> response2 = controllerM.createMitarbeiter(dto2);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         assertEquals(200, response2.getStatusCodeValue());
-        ids.add(response1.getBody());
-        ids.add(response2.getBody());
+        usernames.add(username1);
+        usernames.add(username2);
 
-        TeamDto teamDto = new TeamDto(teamName, ids);
+        TeamDto teamDto = new TeamDto(teamName, usernames);
         ResponseEntity<Long> response = controllerT.createNewTeam(teamDto);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(200, response.getStatusCodeValue());
