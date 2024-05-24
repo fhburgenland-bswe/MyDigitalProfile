@@ -49,7 +49,7 @@ public class MitarbeiterController {
 			@ApiResponse(code = 500, message = "In case of an internal server error.") })
 	@GetMapping(path = "user/{username}/user")
 	public ResponseEntity<MitarbeiterDto> getUser(
-			@ApiParam(name = "Username", required = true) @PathVariable String username) {
+			@PathVariable String username) {
 		MitarbeiterDto mitarbeiterDto = mitarbeiterService.findUserByUsername(username);
 		return new ResponseEntity<>(mitarbeiterDto, HttpStatus.OK);
 	}
