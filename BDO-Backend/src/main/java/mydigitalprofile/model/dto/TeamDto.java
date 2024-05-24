@@ -6,7 +6,7 @@ import java.util.Set;
 public class TeamDto {
 
     private String teamName;
-    private Set<Long> mitarbeiterIds = new HashSet<>();
+    private Set<String> mitarbeiterUsernames = new HashSet<>();
 
     /**
      *
@@ -17,12 +17,12 @@ public class TeamDto {
 
     /**
      * @param teamName
-     * @param mitarbeiterIds
+     * @param mitarbeiterUsernames
      */
-    public TeamDto(String teamName, Set<Long> mitarbeiterIds) {
+    public TeamDto(String teamName, Set<String> mitarbeiterUsernames) {
         super();
         this.teamName = teamName;
-        this.mitarbeiterIds = mitarbeiterIds;
+        this.mitarbeiterUsernames = mitarbeiterUsernames;
     }
 
     /**
@@ -40,17 +40,17 @@ public class TeamDto {
     }
 
     /**
-     * @return the mitarbeiterIds
+     * @return the mitarbeiterUsernames
      */
-    public Set<Long> getMitarbeiterIds() {
-        return mitarbeiterIds;
+    public Set<String> getMitarbeiterUsernames() {
+        return mitarbeiterUsernames;
     }
 
     /**
-     * @param mitarbeiterIds the mitarbeiterIds to set
+     * @param mitarbeiterUsernames the mitarbeiterUsernames to set
      */
-    public void setMitarbeiterIds(Set<Long> mitarbeiterIds) {
-        this.mitarbeiterIds = mitarbeiterIds;
+    public void setMitarbeiterUsernames(Set<String> mitarbeiterUsernames) {
+        this.mitarbeiterUsernames = mitarbeiterUsernames;
     }
 
 }
