@@ -1,6 +1,6 @@
 # BDO-Frontend
 
-This Project is a frontend for the BDO-Project. It is built with [Vite](https://vitejs.dev/), [Vue 3](https://v3.vuejs.org/), [TypeScript](https://www.typescriptlang.org/), [Toastify](https://vue3-toastify.js-bridge.com/)  and [Vitest](https://vitest.dev/)
+This Project is a frontend for the BDO-Project. It is built with [Vite](https://vitejs.dev/), [Vue 3](https://v3.vuejs.org/), [TypeScript](https://www.typescriptlang.org/), [Toastify](https://vue3-toastify.js-bridge.com/), [Vitest](https://vitest.dev/) and [NodeJS Version 20.11.0](https://nodejs.org/en)
 
 
 ## Recommended IDE Setup
