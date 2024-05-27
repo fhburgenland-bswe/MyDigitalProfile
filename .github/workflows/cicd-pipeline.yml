@@ -49,7 +49,7 @@ jobs:
           cd backend
           ./mvnw spring-boot:run &
         env:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/mydatabase
+          SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/bdodatabase
           SPRING_DATASOURCE_USERNAME: postgres
           SPRING_DATASOURCE_PASSWORD: postgres
 
