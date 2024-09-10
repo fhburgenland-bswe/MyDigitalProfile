@@ -1,4 +1,3 @@
-// src/main/java/mydigitalprofile/service/TeamMemberService.java
 package mydigitalprofile.service;
 
 import java.util.List;
@@ -20,6 +19,10 @@ public class TeamMemberService {
 
     public Optional<TeamMember> findById(Long id) {
         return repository.findById(id);
+    }
+
+    public Optional<TeamMember> findByEmail(String email) {
+        return repository.findByEmail(email);
     }
 
     public TeamMember save(TeamMember teamMember) {
