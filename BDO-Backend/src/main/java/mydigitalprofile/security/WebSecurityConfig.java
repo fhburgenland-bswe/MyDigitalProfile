@@ -22,10 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 
-
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -37,11 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
             "/webjars/**"
     };
 
-
     public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
-
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -53,19 +50,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService());
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-
         return authenticationProvider;
     }
 
+    @Bean
     public UsernamePasswordAuthenticationFilter usernamePasswordAuthenticationFilter() throws Exception {
         JsonUsernamePasswordAuthenticationFilter authenticationFilter = new JsonUsernamePasswordAuthenticationFilter();
         authenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler());
         authenticationFilter.setAuthenticationManager(authenticationManagerBean());
-
         return authenticationFilter;
     }
 
@@ -74,14 +71,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         return new CustomAuthenticationSuccessHandler();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         final CorsConfiguration configurationForCors = new CorsConfiguration();
-
         configurationForCors.applyPermitDefaultValues();
-        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5432/, ", "http://localhost:5173/"));
+        configurationForCors.setAllowedOrigins(List.of("http://localhost:5432/", "http://localhost:5173/"));
         configurationForCors.setAllowedHeaders(List.of("*"));
         configurationForCors.setExposedHeaders(List.of("*"));
         configurationForCors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
@@ -90,67 +84,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.cors().configurationSource(request -> configurationForCors)
                 .and().sessionManagement();
 
-
         http.authorizeRequests()
-                .antMatchers("/h2-console/**")
-                .permitAll();
-
-        http.authorizeRequests()
-                .antMatchers(AUTH_WHITELIST)
-                .permitAll();
-
-        http.authorizeRequests()
-                .antMatchers("/api/admin/**")
-                .access("hasRole('ROLE_ADMIN')");
-
-        http.authorizeRequests()
-                .antMatchers("/api/teamleader/**")
-                .access("hasRole('ROLE_TEAMLEADER')");
-
-        http.authorizeRequests()
-                .antMatchers("/api/user/**")
-                .access("hasRole('ROLE_USER')");
-
-        http.authorizeRequests()
-                .antMatchers("/api/**")
-                .permitAll();
+                .antMatchers("/h2-console/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/teamleader/**").hasRole("TEAMLEADER")
+                .antMatchers("/api/user/**").hasRole("USER")
+                .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated();
 
         http.csrf().disable();
-
         http.headers().frameOptions().disable();
 
-        http.authorizeRequests()
-                .anyRequest()
-                .authenticated();
+        http.formLogin().loginProcessingUrl("/login").permitAll();
+        http.logout().logoutUrl("/logout").invalidateHttpSession(true).deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)).permitAll();
 
-        http.formLogin()
-                .loginProcessingUrl("/login")
-                .permitAll();
-
-        http.logout()
-                .logoutUrl("/logout")
-                .invalidateHttpSession(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)))
-                .permitAll();
-
-        http.addFilterAt(
-                usernamePasswordAuthenticationFilter(),
-                UsernamePasswordAuthenticationFilter.class
-        );
+        http.addFilterAt(usernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling()
-                .accessDeniedHandler(
-                        (httpServletRequest, httpServletResponse, e) ->
-                                httpServletResponse.sendError(
-                                        HttpServletResponse.SC_FORBIDDEN
-                                )
-                )
-                .authenticationEntryPoint(
-                        new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
-                );
+                .accessDeniedHandler((httpServletRequest, httpServletResponse, e) ->
+                        httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN))
+                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
