@@ -37,8 +37,8 @@ public class UserControllerTest {
         user.setAddress("123 Main St");
         user.setEmployeeNumber("EMP12345");
         user.setBirthDate(new Date());
-        user.setLocation("New York");
-        user.setState("NY");
+        user.setLocation("Vienna");
+        user.setState("VIE");
         user.setCareerLevel("Senior Developer");
         user.setSkills("Java, Spring Boot");
         user.setTeam("Development");

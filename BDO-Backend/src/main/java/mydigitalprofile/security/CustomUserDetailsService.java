@@ -9,8 +9,7 @@ import org.springframework.stereotype.Service;
 import mydigitalprofile.model.Mitarbeiter;
 import mydigitalprofile.repository.MitarbeiterRepository;
 
-@Service
-@Qualifier("customUserDetailsServiceSecurity")
+@Service("customUserDetailsServiceSecurity")
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MitarbeiterRepository mitarbeiterRepository;
