@@ -1,7 +1,9 @@
 package mydigitalprofile.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
-
+@Entity
 public class User {
     private String firstName;
     private String lastName;
@@ -13,6 +15,8 @@ public class User {
     private String careerLevel;
     private String skills;
     private String team;
+    @Id
+    private Long id;
 
     // Getters and Setters
     public String getFirstName() {
@@ -93,5 +97,13 @@ public class User {
 
     public void setTeam(String team) {
         this.team = team;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
