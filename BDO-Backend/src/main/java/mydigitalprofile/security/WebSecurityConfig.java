@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -26,7 +28,13 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    @Qualifier("customUserDetailsServiceService")
+    private UserDetailsService customUserDetailsServiceService;
+
+    @Autowired
+    @Qualifier("customUserDetailsServiceSecurity")
+    private UserDetailsService customUserDetailsServiceSecurity;
 
     private static final String[] AUTH_WHITELIST = {
             "/swagger-ui/**",
@@ -36,13 +44,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**"
     };
 
-    public WebSecurityConfig(CustomUserDetailsService customUserDetailsService) {
-        this.customUserDetailsService = customUserDetailsService;
-    }
-
     @Bean
     public UserDetailsService userDetailsService() {
-        return this.customUserDetailsService;
+        return this.customUserDetailsServiceService;
     }
 
     @Bean
