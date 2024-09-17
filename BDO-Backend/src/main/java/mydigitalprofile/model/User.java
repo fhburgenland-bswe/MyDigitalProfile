@@ -1,22 +1,46 @@
 package mydigitalprofile.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+
 @Entity
+@Table(name = "users") // Vermeidung von reservierten Schlüsselwörtern
 public class User {
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String employeeNumber;
-    private Date birthDate;
-    private String location;
-    private String state;
-    private String careerLevel;
-    private String skills;
-    private String team;
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "address")
+    private String address;
+
+    @Column(name = "employee_number")
+    private String employeeNumber;
+
+    @Column(name = "birth_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date birthDate;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "career_level")
+    private String careerLevel;
+
+    @Column(name = "skills")
+    private String skills;
+
+    @Column(name = "team")
+    private String team;
 
     // Getters and Setters
     public String getFirstName() {
@@ -99,11 +123,11 @@ public class User {
         this.team = team;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
