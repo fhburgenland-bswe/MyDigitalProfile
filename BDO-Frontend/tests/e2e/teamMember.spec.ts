@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-
+import teamMemberService from '@src/services/teamMemberService.ts';
 test.describe('Team Member E2E Tests', () => {
     test('should navigate to team members list', async ({ page }: { page: Page }) => {
         await page.goto('/');

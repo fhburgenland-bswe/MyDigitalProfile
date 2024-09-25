@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
-import {getUserData, logout, updateUserData} from '@/services/user.service';
+import { onMounted, ref } from 'vue';
+import { getUserData, logout, updateUserData } from '@/services/user.service';
 import ModalComponent from '@/components/Modals/UpdateDataModal.vue';
-import {useRouter} from 'vue-router';
-import {toast} from "vue3-toastify";
+import { useRouter } from 'vue-router';
+import { toast } from "vue3-toastify";
 import CreateUserModal from '@/components/Modals/CreateUserModal.vue';
 
 const isMenuOpen = ref(false);
@@ -209,9 +209,7 @@ async function handleUpdate({ field, value }) {
   <CreateUserModal :isVisible="isCreateUserModalVisible" @close="closeCreateUserModal" />
 </template>
 
-
 <style scoped>
-
 #personapicture:hover {
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
@@ -252,8 +250,7 @@ async function handleUpdate({ field, value }) {
   opacity: 1;
 }
 
-
-.desktop-navbar{
+.desktop-navbar {
   float: left;
   display: flex;
   align-items: center;
@@ -261,11 +258,9 @@ async function handleUpdate({ field, value }) {
   width: 30%;
 }
 
-.emptydiv{
+.emptydiv {
   width: 30%;
 }
-
-
 
 .editable-icon {
   cursor: pointer;
@@ -275,7 +270,6 @@ async function handleUpdate({ field, value }) {
 .editable-icon:hover {
   transform: scale(1.1);
   filter: brightness(0) saturate(100%) invert(27%) sepia(99%) saturate(6357%) hue-rotate(191deg) brightness(91%) contrast(92%);
-
 }
 
 * {
@@ -285,7 +279,7 @@ async function handleUpdate({ field, value }) {
   box-sizing: border-box;
 }
 
-main{
+main {
   margin: 100px auto;
   max-width: 600px;
   display: grid;
@@ -297,10 +291,9 @@ main{
   gap: 20px;
 }
 
-.container{
+.container {
   display: contents;
 }
-
 
 .grid-item:nth-child(2) {
   text-align: right;
@@ -312,7 +305,6 @@ main{
   width: fit-content;
 }
 
-
 body {
   min-height: 100vh;
   margin: 0;
@@ -321,13 +313,11 @@ body {
   position: relative;
 }
 
-
 header {
   padding: 0.5rem 0;
   margin: 0;
   width: 100%;
 }
-
 
 nav {
   display: flex;
@@ -342,7 +332,6 @@ nav {
   color: black;
 }
 
-
 nav .logo {
   display: flex;
   justify-content: center;
@@ -350,7 +339,6 @@ nav .logo {
   margin: auto;
   width: 30%;
 }
-
 
 .logo img {
   width: 347px;
@@ -377,13 +365,9 @@ nav ul li {
   font-size: 1rem;
 }
 
-
-
-
-#personapicture{
+#personapicture {
   width: 100px;
 }
-
 
 .mobile-navbar {
   display: none;
@@ -403,41 +387,30 @@ nav ul li {
   align-items: center;
 }
 
-
-
-
-
-
-
-
-
-
 @media (max-width: 900px) {
-
-  .emptydiv{
+  .emptydiv {
     display: none;
   }
-  nav .logo{
+  nav .logo {
     display: none;
   }
 
-  .desktop-navbar{
+  .desktop-navbar {
     display: none;
   }
 
   .navbar-title-desktop,
-  .navbar-avatar{
+  .navbar-avatar {
     display: none;
   }
 
-  main{
+  main {
     font-size: 1.2em;
   }
 
-  .logo img{
+  .logo img {
     display: none;
   }
-
 
   nav ul {
     display: block;
@@ -470,7 +443,7 @@ nav ul li {
     font-size: 1.5rem;
   }
 
-  #personapicture{
+  #personapicture {
     width: 50px;
   }
 }
@@ -512,19 +485,19 @@ nav ul li {
   transform-origin: 10% 90%;
 }
 
-.mobile-menu{
-  left:0;
+.mobile-menu {
+  left: 0;
   right: 0;
   padding: 0;
 }
 
-.mobile-menu li{
+.mobile-menu li {
   margin: 0;
   cursor: pointer;
   padding: 15px;
 }
+
 .mobile-menu li:hover {
   background-color: #f0f0f0;
 }
-
 </style>

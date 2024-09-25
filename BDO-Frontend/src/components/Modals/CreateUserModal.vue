@@ -163,8 +163,8 @@ const karriereLevels = [
       <h2>Neuen Benutzer anlegen</h2>
       <form @submit.prevent="submitNewUser" class="modal-form">
         <div class="input-group" v-for="(value, key) in newUser" :key="key" v-if="key !== 'karriereLevel'">
-          <label :for="key" v-if="key !== 'karriereLevel'">{{ formatLabel(key) }}</label>
-          <input v-model="newUser[key]" :type="inputType(key)" :id="key" :name="key" required v-if="key !== 'karriereLevel'">
+          <label :for="key">{{ formatLabel(key) }}</label>
+          <input v-model="newUser[key]" :type="inputType(key)" :id="key" :name="key" required>
           <span v-if="errors[key]" class="error-message">{{ errors[key] }}</span>
         </div>
         <div class="input-group">

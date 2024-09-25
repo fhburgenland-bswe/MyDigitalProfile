@@ -14,6 +14,8 @@
   "compilerOptions": {
     "moduleResolution": "node",
     "lib": ["ES2015", "DOM"],
-    "types": ["@playwright/test"]
+    "types": ["@playwright/test"],
+    "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
+    "exclude": ["node_modules"]
   }
 }

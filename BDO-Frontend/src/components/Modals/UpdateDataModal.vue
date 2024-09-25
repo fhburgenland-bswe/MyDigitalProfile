@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, defineEmits, computed } from 'vue';
 
 const props = defineProps({
@@ -78,10 +78,7 @@ function submitData() {
   </div>
 </template>
 
-
-
 <style scoped>
-
 .error-message {
   color: red;
   font-size: 0.8em;
