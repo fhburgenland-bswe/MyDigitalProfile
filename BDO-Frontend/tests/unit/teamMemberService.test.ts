@@ -1,6 +1,5 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { mount, flushPromises } from '@vue/test-utils';
-import { getTeamMembers, getTeamMemberById, updateTeamMember } from '@/services/teamMemberService.ts';
+import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+import { getTeamMembers, getTeamMemberById, updateTeamMember } from '@/services/teamMemberService';
 
 // Set up fetch mock
 vi.stubGlobal('fetch', vi.fn());
@@ -12,7 +11,7 @@ describe('teamMemberService', () => {
 
     it('should fetch team members', async () => {
         const data = [{ id: 1, name: 'John Doe' }];
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: true,
             json: async () => data
         });
@@ -24,7 +23,7 @@ describe('teamMemberService', () => {
 
     it('should fetch a team member by ID', async () => {
         const data = { id: 1, name: 'John Doe' };
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: true,
             json: async () => data
         });
@@ -36,7 +35,7 @@ describe('teamMemberService', () => {
 
     it('should update a team member', async () => {
         const data = { id: 1, name: 'John Doe' };
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: true,
             json: async () => data
         });
@@ -54,7 +53,7 @@ describe('teamMemberService', () => {
     });
 
     it('should handle errors when fetching team members', async () => {
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: false
         });
 
@@ -62,7 +61,7 @@ describe('teamMemberService', () => {
     });
 
     it('should handle errors when fetching a team member by ID', async () => {
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: false
         });
 
@@ -70,7 +69,7 @@ describe('teamMemberService', () => {
     });
 
     it('should handle errors when updating a team member', async () => {
-        (fetch as vi.Mock).mockResolvedValue({
+        (fetch as Mock).mockResolvedValue({
             ok: false
         });
 

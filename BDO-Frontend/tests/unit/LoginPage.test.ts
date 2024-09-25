@@ -1,10 +1,9 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import LoginPage from '@/components/LoginPage/LoginPage.vue';
 import { login } from '@/services/login.service';
 import { useRouter, useRoute } from 'vue-router';
 import { toast } from "vue3-toastify";
-
 
 // Mock the login service
 vi.mock('@/services/login.service', () => ({
@@ -35,7 +34,7 @@ describe('LoginPage.vue', () => {
     let wrapper;
 
     beforeEach(() => {
-        login.mockClear();
+        (login as Mock).mockClear();
         mockRouter.push.mockClear();
         wrapper = mount(LoginPage, {
             global: {
@@ -52,7 +51,7 @@ describe('LoginPage.vue', () => {
 
     it('should handle login with correct email and password successfully', async () => {
         const mockLoginResponse = { success: true, message: 'Login successful', userId: 1 };
-        login.mockResolvedValue(mockLoginResponse);
+        (login as Mock).mockResolvedValue(mockLoginResponse);
         const emailInput = wrapper.find('input[name="email"]');
         const passwordInput = wrapper.find('input[name="password"]');
         const form = wrapper.find('form');
@@ -68,7 +67,7 @@ describe('LoginPage.vue', () => {
 
     it('should handle login failure with incorrect email and password', async () => {
         const mockLoginResponse = { success: false, message: 'Login failed' };
-        login.mockResolvedValue(mockLoginResponse);
+        (login as Mock).mockResolvedValue(mockLoginResponse);
         const form = wrapper.find('form');
 
         await form.trigger('submit');
