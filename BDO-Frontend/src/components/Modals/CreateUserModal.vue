@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineEmits, defineProps } from 'vue';
+import { ref, defineEmits, defineProps, computed } from 'vue';
 import { createUser } from '@/services/user.service';
 import { toast } from "vue3-toastify";
 
@@ -20,34 +20,44 @@ const newUser = ref({
   plz: '',
   ort: '',
   standort: '',
-  karriereLevel: 'UNBEKANNT' // Default value
+  karriereLevel: ''
 });
 
 const errorMessages = {
-  vorname: "Der Vorname darf nur Buchstaben enthalten.",
-  nachname: "Der Nachname darf nur Buchstaben enthalten.",
-  geburtsdatum: "Das Geburtsdatum muss im Format TT.MM.JJJJ sein.",
-  standort: "Der Standort darf nur Buchstaben enthalten.",
-  plz: "Die PLZ darf nur Zahlen enthalten.",
-  ort: "Der Ort darf nur Buchstaben enthalten.",
-  strasse: "Die Straße darf nur Buchstaben enthalten.",
-  hausNr: "Die Hausnummer darf Buchstaben, Zahlen und spezielle Zeichen wie / und . enthalten."
+  pnr: 'Invalid Personalnummer',
+  vorname: 'Invalid Vorname',
+  nachname: 'Invalid Nachname',
+  username: 'Invalid E-Mail',
+  passwort: 'Invalid Passwort',
+  geburtsdatum: 'Invalid Geburtsdatum',
+  strasse: 'Invalid Straße',
+  hausNr: 'Invalid Hausnummer',
+  plz: 'Invalid PLZ',
+  ort: 'Invalid Ort',
+  standort: 'Invalid Standort',
+  karriereLevel: 'Invalid Karrierelevel'
 };
 
 const errors = ref({});
 
 const patterns = {
-  vorname: /^[a-zA-ZäöüßÄÖÜ]+$/,
-  nachname: /^[a-zA-ZäöüßÄÖÜ]+$/,
-  standort: /^[a-zA-ZäöüßÄÖÜ\s]+$/,
+  pnr: /^\d+$/,
+  vorname: /^[A-Za-zäöüßÄÖÜ\s]+$/,
+  nachname: /^[A-Za-zäöüßÄÖÜ\s]+$/,
+  username: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  passwort: /^.{6,}$/,
+  geburtsdatum: /^\d{4}-\d{2}-\d{2}$/,
+  strasse: /^[A-Za-zäöüßÄÖÜ\s]+$/,
+  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s/.-]*$/,
   plz: /^\d+$/,
-  strasse: /^[a-zA-ZäöüßÄÖÜ\s]+$/,
-  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/
+  ort: /^[A-Za-zäöüßÄÖÜ\s]+$/,
+  standort: /^[A-Za-zäöüßÄÖÜ\s]+$/,
+  karriereLevel: /^[A-Z_]+$/
 };
 
 function validateField(field, value) {
   if (patterns[field] && !patterns[field].test(value)) {
-    errors.value[field] = errorMessages[field] || 'Invalid input.';
+    errors.value[field] = errorMessages[field];
     return false;
   }
   errors.value[field] = ''; // Clear error
@@ -67,7 +77,7 @@ function closeModal() {
     plz: '',
     ort: '',
     standort: '',
-    karriereLevel: 'UNBEKANNT' // Reset to default value
+    karriereLevel: ''
   };
   errors.value = {};
   emits('close');
@@ -84,12 +94,9 @@ function formatDate(dateStr) {
 async function submitNewUser() {
   const isValid = Object.keys(newUser.value).every(key => validateField(key, newUser.value[key]));
   if (isValid) {
-    const userData = {...newUser.value, geburtsdatum: formatDate(newUser.value.geburtsdatum)};
-    console.log('Submitting new user:', JSON.stringify(userData));
     try {
-      const response = await createUser(userData);
-      console.log('User created successfully:', response);
-      toast("Benutzer wurde erfolgreich angelegt", {
+      await createUser(newUser.value);
+      toast("User created successfully", {
         theme: "colored",
         type: "success",
         position: "bottom-center",
@@ -98,8 +105,7 @@ async function submitNewUser() {
       });
       closeModal();
     } catch (error) {
-      console.error('Error creating user:', error.response || error.message || error);
-      toast("Fehler beim Anlegen des Benutzers: " + (error.response?.data || error.message), {
+      toast("Error creating user: " + error.message, {
         theme: "colored",
         type: "error",
         position: "bottom-center",
@@ -107,14 +113,6 @@ async function submitNewUser() {
         dangerouslyHTMLString: true,
       });
     }
-  } else {
-    toast("Es sind noch Fehler im Formular vorhanden. Bitte überprüfen Sie Ihre Eingaben.", {
-      theme: "colored",
-      type: "error",
-      position: "bottom-center",
-      autoClose: 2000,
-      dangerouslyHTMLString: true,
-    });
   }
 }
 
@@ -155,27 +153,36 @@ const karriereLevels = [
   { label: 'Partner', value: 'PARTNER' },
   { label: 'Unbekannt', value: 'UNBEKANNT' }
 ];
+
+const filteredKarriereLevels = computed(() => {
+  return karriereLevels.filter(level => level.value !== 'UNBEKANNT');
+});
 </script>
 
 <template>
   <div v-if="isVisible" class="modal">
     <div class="modal-content">
-      <h2>Neuen Benutzer anlegen</h2>
+      <span class="close" @click="closeModal">&times;</span>
       <form @submit.prevent="submitNewUser" class="modal-form">
-        <div class="input-group" v-for="(value, key) in newUser" :key="key" v-if="key !== 'karriereLevel'">
+        <div v-for="(value, key) in newUser" :key="key" class="input-group">
           <label :for="key">{{ formatLabel(key) }}</label>
-          <input v-model="newUser[key]" :type="inputType(key)" :id="key" :name="key" required>
+          <input
+              v-if="key !== 'karriereLevel'"
+              :type="inputType(key)"
+              :id="key"
+              v-model="newUser[key]"
+              @blur="validateField(key, newUser[key])"
+          />
+          <select v-else v-model="newUser[key]" @blur="validateField(key, newUser[key])">
+            <option v-for="level in filteredKarriereLevels" :key="level.value" :value="level.value">
+              {{ level.label }}
+            </option>
+          </select>
           <span v-if="errors[key]" class="error-message">{{ errors[key] }}</span>
         </div>
-        <div class="input-group">
-          <label for="karriereLevel">{{ formatLabel('karriereLevel') }}</label>
-          <select v-model="newUser.karriereLevel" id="karriereLevel" name="karriereLevel">
-            <option v-for="level in karriereLevels" :key="level.value" :value="level.value">{{ level.label }}</option>
-          </select>
-        </div>
         <div class="button-group">
-          <button type="button" class="cancel-btn" @click="closeModal">Abbrechen</button>
-          <button type="submit" class="save-btn">Speichern</button>
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn" @click="closeModal">Cancel</button>
         </div>
       </form>
     </div>
@@ -235,12 +242,12 @@ label {
 
 @keyframes modalFadeIn {
   from {
-    transform: translateY(-50px);
     opacity: 0;
+    transform: translateY(-20px);
   }
   to {
-    transform: translateY(0);
     opacity: 1;
+    transform: translateY(0);
   }
 }
 

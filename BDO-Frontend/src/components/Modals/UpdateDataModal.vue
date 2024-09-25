@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, defineEmits, computed } from 'vue';
+import { ref, defineEmits, defineProps, computed } from 'vue';
 
 const props = defineProps({
   field: String,
@@ -24,7 +24,7 @@ const regexPatterns = {
   plz: /^\d+$/, // Only numbers
   ort: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
   strasse: /^[A-Za-zäöüßÄÖÜ\s]+$/, // Only letters and spaces
-  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s\/.-]*$/ // Numbers, letters, and specific special characters
+  hausNr: /^[0-9A-Za-zäöüßÄÖÜ\s/.-]*$/ // Numbers, letters, and specific special characters
 };
 
 const errorMessages = {

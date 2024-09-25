@@ -16,17 +16,18 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
-    "@playwright/test": "^1.47.2",
     "axios": "^1.7.7",
     "json-server": "^1.0.0-alpha.23",
     "miragejs": "^0.1.48",
-    "vue-router": "^4.0.13",
-    "vue3-toastify": "^0.2.1"
+    "vitest": "^1.5.2",
+    "vue-router": "^4.4.5",
+    "vue3-toastify": "^0.2.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.47.2",
     "@rushstack/eslint-patch": "^1.3.3",
     "@tsconfig/node20": "^20.1.2",
-    "@types/jest": "^29.5.13",
+    "@types/jest": "^26.0.24",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.11.28",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -48,8 +49,7 @@
     "ts-jest": "^27.0.4",
     "typescript": "^4.5.4",
     "vite": "^5.1.6",
-    "vitest": "^1.5.2",
-    "vue": "^3.4.25",
+    "vue": "^3.5.8",
     "vue-tsc": "^2.0.6"
   },
   "type": "module"

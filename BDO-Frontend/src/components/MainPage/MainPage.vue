@@ -52,7 +52,19 @@ function closeCreateUserModal() {
   isCreateUserModalVisible.value = false;
 }
 
-const userData = ref<any>(null);
+const userData = ref<any>({
+  vorname: '',
+  nachname: '',
+  pnr: '',
+  geburtsdatum: '',
+  standort: '',
+  plz: '',
+  ort: '',
+  strasse: '',
+  hausNr: '',
+  skills: [],
+  karriereLevel: ''
+});
 const error = ref(null);
 
 onMounted(async () => {
@@ -101,7 +113,7 @@ async function handleUpdate({ field, value }) {
           <span class="toggler-icon middle-bar"></span>
           <span class="toggler-icon bottom-bar"></span>
         </button>
-        <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+        <div class="navbar-title">{{ userData ? userData.value.vorname : '' }} {{ userData ? userData.value.nachname : '' }}</div>
         <div class="navbar-avatar">
           <img id="personapicture" src="@/assets/personaavatar.svg" alt="Avatar Picture" srcset="">
         </div>
@@ -123,7 +135,7 @@ async function handleUpdate({ field, value }) {
             <li @click="handleLogout">Logout</li>
           </ul>
         </div>
-        <div class="navbar-title">{{ userData ? userData.vorname : '' }} {{ userData ? userData.nachname : '' }}</div>
+        <div class="navbar-title">{{ userData ? userData.value.vorname : '' }} {{ userData ? userData.value.nachname : '' }}</div>
       </div>
 
       <div class="logo">
@@ -140,68 +152,68 @@ async function handleUpdate({ field, value }) {
     <div v-if="error">{{ error }}</div>
     <div v-if="userData" class="container">
       <div class="grid-item">Personalnummer</div>
-      <div class="grid-item">{{ userData.pnr }}</div>
+      <div class="grid-item">{{ userData.value.pnr }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-else>Loading...</div>
     <div v-if="userData" class="container">
       <div class="grid-item">Vorname</div>
-      <div class="grid-item">{{ userData.vorname }}</div>
+      <div class="grid-item">{{ userData.value.vorname }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Nachname</div>
-      <div class="grid-item">{{ userData.nachname }}</div>
+      <div class="grid-item">{{ userData.value.nachname }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Geburtsdatum</div>
-      <div class="grid-item">{{ userData.geburtsdatum }}</div>
+      <div class="grid-item">{{ userData.value.geburtsdatum }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Standort</div>
-      <div class="grid-item">{{ userData.standort }}</div>
+      <div class="grid-item">{{ userData.value.standort }}</div>
       <div class="grid-item ">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('standort')" class="editable-icon">
       </div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">PLZ</div>
-      <div class="grid-item">{{ userData.plz }}</div>
+      <div class="grid-item">{{ userData.value.plz }}</div>
       <div class="grid-item">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('plz')" class="editable-icon">
       </div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Ort</div>
-      <div class="grid-item">{{ userData.ort }}</div>
+      <div class="grid-item">{{ userData.value.ort }}</div>
       <div class="grid-item">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('ort')" class="editable-icon">
       </div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Straße</div>
-      <div class="grid-item">{{ userData.strasse }}</div>
+      <div class="grid-item">{{ userData.value.strasse }}</div>
       <div class="grid-item">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('strasse')" class="editable-icon">
       </div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Hausnummer</div>
-      <div class="grid-item">{{ userData.hausNr }}</div>
+      <div class="grid-item">{{ userData.value.valuehausNr }}</div>
       <div class="grid-item">
         <img src="@/assets/pencil.svg" alt="Pencil Icon" @click="showModal('hausNr')" class="editable-icon">
       </div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Skills</div>
-      <div class="grid-item">{{ userData.skills ? userData.skills.join(', ') : '' }}</div>
+      <div class="grid-item">{{ userData.value.skills ? userData.value.skills.join(', ') : '' }}</div>
       <div class="grid-item"></div>
     </div>
     <div v-if="userData" class="container">
       <div class="grid-item">Karrierelevel</div>
-      <div class="grid-item">{{ karriereLevelMapping[userData.karriereLevel] }}</div>
+      <div class="grid-item">{{ karriereLevelMapping[userData.value.karriereLevel] }}</div>
       <div class="grid-item"></div>
     </div>
   </main>
