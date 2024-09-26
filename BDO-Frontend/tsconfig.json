@@ -1,16 +1,4 @@
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "moduleResolution": "node",
-    "lib": ["es2015", "dom"],
-    "types": ["@playwright/test", "vitest"]
-  },
-  "include": ["src/**/*.ts", "tests/e2e/**/*.ts", "tests/unit/**/*.ts"],
-  "exclude": ["node_modules"],
-  "files": [],
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -21,5 +9,26 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "lib": ["ES2015", "DOM"],
+    "types": ["@playwright/test"],
+    "esModuleInterop": true, // Hinzugefügt basierend auf der Jest-Warnung
+    "target": "es5", // Ziel-ECMAScript-Version
+    "module": "commonjs", // Modulsystem
+    "strict": true, // Aktiviert eine breite Palette von Typsicherheitsprüfungen
+    "jsx": "preserve", // JSX-Unterstützung
+    "sourceMap": true, // Erzeugt entsprechende '.map'-Datei
+    "outDir": "./dist", // Ausgabeverzeichnis für erstellte JavaScript-Dateien
+    "rootDir": "./src", // Stammverzeichnis der Quelldateien
+    "removeComments": true, // Entfernt Kommentare aus dem erstellten JavaScript
+    "noImplicitAny": true, // Hebt einen Fehler hervor, wenn 'any' implizit verwendet wird
+    "strictNullChecks": true, // Aktiviert strikte Nullprüfungen
+    "strictFunctionTypes": true, // Aktiviert strikte Prüfung von Funktionstypen
+    "strictBindCallApply": true, // Aktiviert strikte 'bind', 'call' und 'apply'-Methoden
+    "strictPropertyInitialization": true, // Aktiviert strikte Initialisierung von Eigenschaften
+    "noImplicitThis": true, // Hebt einen Fehler hervor, wenn 'this' implizit 'any' ist
+    "alwaysStrict": true // Interpretiert den Code im strikten Modus
+  }
 }

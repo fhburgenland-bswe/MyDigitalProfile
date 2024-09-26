@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
+import { describe, it, expect, vi, afterEach, Mock } from 'vitest';
 import { getTeamMembers, getTeamMemberById, updateTeamMember } from '@/services/teamMemberService';
 
 // Set up fetch mock
@@ -13,7 +13,7 @@ describe('teamMemberService', () => {
         const data = [{ id: 1, name: 'John Doe' }];
         (fetch as Mock).mockResolvedValue({
             ok: true,
-            json: async () => data
+            json: async () => data,
         });
 
         const result = await getTeamMembers();
@@ -25,7 +25,7 @@ describe('teamMemberService', () => {
         const data = { id: 1, name: 'John Doe' };
         (fetch as Mock).mockResolvedValue({
             ok: true,
-            json: async () => data
+            json: async () => data,
         });
 
         const result = await getTeamMemberById(1);
@@ -37,7 +37,7 @@ describe('teamMemberService', () => {
         const data = { id: 1, name: 'John Doe' };
         (fetch as Mock).mockResolvedValue({
             ok: true,
-            json: async () => data
+            json: async () => data,
         });
 
         const result = await updateTeamMember(1, data);
@@ -45,16 +45,16 @@ describe('teamMemberService', () => {
         expect(fetch).toHaveBeenCalledWith('http://localhost:8080/api/team-members/1', {
             method: 'PUT',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             credentials: 'include',
-            body: JSON.stringify(data)
+            body: JSON.stringify(data),
         });
     });
 
     it('should handle errors when fetching team members', async () => {
         (fetch as Mock).mockResolvedValue({
-            ok: false
+            ok: false,
         });
 
         await expect(getTeamMembers()).rejects.toThrow('Network response was not ok');
@@ -62,7 +62,7 @@ describe('teamMemberService', () => {
 
     it('should handle errors when fetching a team member by ID', async () => {
         (fetch as Mock).mockResolvedValue({
-            ok: false
+            ok: false,
         });
 
         await expect(getTeamMemberById(1)).rejects.toThrow('Network response was not ok');
@@ -70,7 +70,7 @@ describe('teamMemberService', () => {
 
     it('should handle errors when updating a team member', async () => {
         (fetch as Mock).mockResolvedValue({
-            ok: false
+            ok: false,
         });
 
         await expect(updateTeamMember(1, {})).rejects.toThrow('Network response was not ok');

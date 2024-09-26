@@ -23,18 +23,21 @@ public class KalenderEventController {
     @Autowired
     private KalenderEventService service;
 
+    // Endpunkt zum Hinzufügen eines Kalendereintrags für einen Benutzer
     @PostMapping(path = "user/kalenderEvent/{id}")
     public ResponseEntity<Long> addKalenderEvent(@PathVariable long id, @RequestBody KalenderEventDto eventDto) {
         Long eventId = service.addKalenderEvent(id, eventDto);
         return new ResponseEntity<>(eventId, HttpStatus.OK);
     }
 
+    // Endpunkt zum Abrufen aller Kalendereinträge eines Benutzers
     @GetMapping(path = "user/kalenderEvent/all/{id}")
     public ResponseEntity<List<KalenderEventDto>> getAllKalenderEventsByUserId(@PathVariable long id) {
         List<KalenderEventDto> kalenderEventDtos = service.getAllEventForUserById(id);
         return new ResponseEntity<>(kalenderEventDtos, HttpStatus.OK);
     }
 
+    // Endpunkt zum Aktualisieren eines Kalendereintrags
     @PutMapping(path = "user/kalenderEvent/update/{kalenderEventId}")
     public ResponseEntity<String> updateKalenderEvent(@PathVariable long kalenderEventId,
                                                       @RequestBody KalenderEventDto eventDto) {
@@ -42,6 +45,7 @@ public class KalenderEventController {
         return new ResponseEntity<String>("Calender was updated successfully!", HttpStatus.OK);
     }
 
+    // Endpunkt zum Löschen eines Kalendereintrags
     @DeleteMapping(path = "user/kalenderEvent/delete/{kalenderEventId}")
     public ResponseEntity<String> deleteKalenderEvent(@PathVariable long kalenderEventId) {
         service.deleteEvent(kalenderEventId);

@@ -2,45 +2,39 @@ import { describe, it, expect, vi, beforeEach, afterEach, Mock } from 'vitest';
 import { mount, flushPromises } from '@vue/test-utils';
 import LoginPage from '@/components/LoginPage/LoginPage.vue';
 import { login } from '@/services/login.service';
-import { useRouter, useRoute } from 'vue-router';
-import { toast } from "vue3-toastify";
+import { createRouter, createMemoryHistory } from 'vue-router'; // Importiere die notwendigen Funktionen
 
 // Mock the login service
 vi.mock('@/services/login.service', () => ({
     login: vi.fn(),
 }));
 
-// Create mock router instance
-const mockRouter = {
-    push: vi.fn()
-};
+// Mock the toast (entferne diesen Teil, wenn toast nicht verwendet wird)
+// vi.mock("vue3-toastify", () => ({
+//     toast: vi.fn()
+// }));
 
-const mockRoute = {
-    query: {}
-};
+// Mock routes (Beispielrouten definieren, falls sie benötigt werden)
+const routes = [
+    { path: '/', component: {} },
+    { path: '/Main', component: {} }
+];
 
-// Mock "useRouter" to return the mock router instance
-vi.mock('vue-router', () => ({
-    useRouter: () => mockRouter,
-    useRoute: () => mockRoute,
-}));
-
-// Mock the toast
-vi.mock("vue3-toastify", () => ({
-    toast: vi.fn()
-}));
+// Router initialisieren
+const router = createRouter({
+    history: createMemoryHistory(),
+    routes,
+});
 
 describe('LoginPage.vue', () => {
-    let wrapper;
+    let wrapper: ReturnType<typeof mount>;
 
     beforeEach(() => {
         (login as Mock).mockClear();
-        mockRouter.push.mockClear();
+        router.push = vi.fn(); // Mock für router.push
         wrapper = mount(LoginPage, {
             global: {
-                mocks: {
-                    useRouter: () => mockRouter
-                }
+                plugins: [router], // Router als Plugin hinzufügen
             }
         });
     });
@@ -62,7 +56,7 @@ describe('LoginPage.vue', () => {
         await flushPromises();
 
         expect(login).toHaveBeenCalledWith('test@example.com', 'password');
-        expect(mockRouter.push).toHaveBeenCalledWith('/Main');
+        expect(router.push).toHaveBeenCalledWith('/Main'); // Angepasste Router-Verwendung
     });
 
     it('should handle login failure with incorrect email and password', async () => {
@@ -74,6 +68,6 @@ describe('LoginPage.vue', () => {
         await flushPromises();
 
         expect(login).toHaveBeenCalled();
-        expect(mockRouter.push).not.toHaveBeenCalled();
+        expect(router.push).not.toHaveBeenCalled();
     });
 });

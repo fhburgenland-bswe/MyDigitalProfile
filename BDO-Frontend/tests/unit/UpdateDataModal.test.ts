@@ -1,9 +1,14 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { mount } from '@vue/test-utils';
+import { mount, VueWrapper } from '@vue/test-utils';
 import UpdateDataModal from '@/components/Modals/UpdateDataModal.vue';
 
+// Beispiel für Verwendung von `vi`
+vi.mock('@/services/user.service', () => ({
+    updateUserData: vi.fn()
+}));
+
 describe('UpdateDataModal.vue', () => {
-    let wrapper;
+    let wrapper: VueWrapper<any>; // Typisiere den Wrapper korrekt
 
     beforeEach(() => {
         wrapper = mount(UpdateDataModal, {

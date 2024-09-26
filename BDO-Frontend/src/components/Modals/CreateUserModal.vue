@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 import { ref, defineEmits, defineProps, computed } from 'vue';
 import { createUser } from '@/services/user.service';
 import { toast } from "vue3-toastify";
 
 const emits = defineEmits(['close']);
-const props = defineProps({
-  isVisible: Boolean
-});
+const props = defineProps<{
+  isVisible: boolean;
+}>();
 
 const newUser = ref({
   pnr: '',
@@ -38,7 +38,7 @@ const errorMessages = {
   karriereLevel: 'Invalid Karrierelevel'
 };
 
-const errors = ref({});
+const errors = ref<Record<string, string>>({});
 
 const patterns = {
   pnr: /^\d+$/,
@@ -55,7 +55,7 @@ const patterns = {
   karriereLevel: /^[A-Z_]+$/
 };
 
-function validateField(field, value) {
+function validateField(field: string, value: string) {
   if (patterns[field] && !patterns[field].test(value)) {
     errors.value[field] = errorMessages[field];
     return false;
@@ -83,7 +83,7 @@ function closeModal() {
   emits('close');
 }
 
-function formatDate(dateStr) {
+function formatDate(dateStr: string) {
   const date = new Date(dateStr);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -131,11 +131,11 @@ const fieldLabels = {
   karriereLevel: 'Karrierelevel'
 };
 
-function formatLabel(field) {
+function formatLabel(field: string) {
   return fieldLabels[field] || field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1').trim();
 }
 
-function inputType(field) {
+function inputType(field: string) {
   if (field === 'username') return 'email';
   if (field === 'passwort') return 'password';
   if (field === 'geburtsdatum') return 'date';

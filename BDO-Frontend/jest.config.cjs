@@ -6,6 +6,7 @@ module.exports = {
     "<rootDir>/tests/unit/MainPage.test.ts",
     "<rootDir>/tests/unit/UpdateDataModal.test.ts",
     "<rootDir>/tests/unit/user.service.test.ts",
+    "<rootDir>/tests/unit/teamMemberService.test.ts"
   ],
   transform: {
     '^.+\\.ts?$': 'ts-jest',
